@@ -10,8 +10,8 @@ public class AdultRabbit extends Rabbit {
 
 	@Override
 	public Direction move() {
-		// TODO Isis
-		return null; // a enlever
+		life = life - 1;;
+		return getRandomDirection();	
 	}
 
 	@Override

@@ -23,7 +23,8 @@ public class RegularCarrot extends Carrot {
 
 	@Override
 	public void setEaten() {
-		// TODO Isis
+		eaten = false;
+		setRespawnTime(5);
 	}
 
 	@Override

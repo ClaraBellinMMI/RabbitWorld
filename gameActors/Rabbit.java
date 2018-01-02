@@ -1,11 +1,14 @@
 package gameActors;
 
+import java.util.Random;
+
 import gameEngine.*;
 
 public abstract class Rabbit extends GameElement {
 	private static int nb = 0;
 	private int id;
-	private int life;
+	//le setLife ne fonctionne pas en faisan setLife (life--)
+	protected int life;
 	protected int age;
 	private boolean male;
 
@@ -23,6 +26,14 @@ public abstract class Rabbit extends GameElement {
 	 * dans la classe, tu peux y acceder avec Direction.UP, ...) - renvoyer la
 	 * direction choisie
 	 * */
+	
+	 private static final Direction[] VALUES = Direction.values();
+	 private static final int SIZE = VALUES.length;
+	 private static final Random RANDOM = new Random();
+
+	 public static Direction getRandomDirection()  {
+	   return VALUES[RANDOM.nextInt(SIZE)];
+	 }
 
 	protected Rabbit(int x, int y, boolean isMale) {
 		super(x, y);
@@ -63,4 +74,5 @@ public abstract class Rabbit extends GameElement {
 		}
 		return false;
 	}
+	
 }
