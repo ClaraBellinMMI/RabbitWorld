@@ -16,7 +16,9 @@ public abstract class Carrot extends GameElement {
 
 	public abstract void setEaten();
 	/* *
-	 * pseudo code de setEaten() - changer le booleen - changer le respawn time
+	 * pseudo code de setEaten() 
+	 * - changer le booleen 
+	 * - changer le respawn time
 	 * selon la classe
 	 * */
 

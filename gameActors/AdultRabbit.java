@@ -8,6 +8,14 @@ public class AdultRabbit extends Rabbit {
 		this.age = Constants.getAdultAge();
 	}
 
+	public boolean reproduce(AdultRabbit r) {
+		boolean sexR = r.isMale();
+		if(this.isMale() != sexR && this.age >= Constants.getAdultAge()) {
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public Direction move() {
 		// TODO Isis

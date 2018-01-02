@@ -18,11 +18,12 @@ public abstract class Rabbit extends GameElement {
 
 	public abstract Direction move();
 	/* * 
-	 * pseudo code de move() - diminuer une quantite de vie selon si adulte ou
-	 * baby - choisir une direction au hasard (j'ai rajoute un enum des Directions
-	 * dans la classe, tu peux y acceder avec Direction.UP, ...) - renvoyer la
-	 * direction choisie
-	 * */
+	 * pseudo code de move() 
+	 * - diminuer d'une quantite de vie dependant de l'age (adulte ou baby)
+	 * - choisir une direction au hasard (j'ai rajoute un enum des Directions
+	 * dans la classe, tu peux y acceder avec Direction.UP, ...) 
+	 * - renvoyer cette direction choisie
+	 * * */
 
 	protected Rabbit(int x, int y, boolean isMale) {
 		super(x, y);
@@ -54,13 +55,5 @@ public abstract class Rabbit extends GameElement {
 
 	public void die() {
 		life = 0;
-	}
-
-	public boolean reproduce(Rabbit r) {
-		boolean sexR = r.isMale();
-		if(this.isMale() != sexR && this.age >= Constants.getAdultAge()) {
-			return true;
-		}
-		return false;
 	}
 }
