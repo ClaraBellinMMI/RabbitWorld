@@ -1,29 +1,35 @@
 package gameEngine;
 
 public abstract class GameElement implements Displayable {
-	private int posX;
-	private int posY;
+	/**
+	 * Position en ligne du GameElement
+	 */
+	private int posLi;
+	/**
+	 * Position en colonne du GameElement
+	 */
+	private int posCo;
 
 	public GameElement(int posX, int posY) {
 		super();
-		this.posX = posX;
-		this.posY = posY;
+		this.posLi = posX;
+		this.posCo = posY;
 	}
 
-	public int getPosX() {
-		return this.posX;
+	public int getPosLi() {
+		return this.posLi;
 	}
 
-	public void setPosX(int posX) {
-		this.posX = posX;
+	public void setPosLi(int posX) {
+		this.posLi = posX;
 	}
 
-	public int getPosY() {
-		return this.posY;
+	public int getPosCo() {
+		return this.posCo;
 	}
 
-	public void setPosY(int posY) {
-		this.posY = posY;
+	public void setPosCo(int posY) {
+		this.posCo = posY;
 	}
 	
 

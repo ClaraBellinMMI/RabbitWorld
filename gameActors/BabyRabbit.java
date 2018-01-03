@@ -1,16 +1,27 @@
 package gameActors;
 
+import gameEngine.Cell;
+
+/**
+ * Bebe Lapin.
+ */
 public class BabyRabbit extends Rabbit {
-	
-	public BabyRabbit(int x, int y, boolean isMale) {
-		super(x, y, isMale);
+	/**
+	 * Cree un BabyRabbit avec comme reference de coordonnees i, j.
+	 * 
+	 * @param i 		le numero de ligne de la grille ou il se trouve
+	 * @param j 		le numero de colonne de la grille ou il se trouve
+	 * @param isMale 	booleen indiquant s'il s'agit d'un male
+	 */
+	public BabyRabbit(int i, int j, boolean isMale) {
+		super(i, j, isMale);
 		this.age = 0;
 	}
 
 	@Override
-	public Direction move() {
-		life = life - 2;
-		return getRandomDirection();	
+	public Cell move() {
+		this.life = this.life - 2;
+		return nextCell();	
 	}
 
 	@Override
