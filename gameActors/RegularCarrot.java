@@ -33,7 +33,7 @@ public class RegularCarrot extends Carrot {
 
 	@Override
 	public void setEaten() {
-		eaten = false;
+		this.eaten = true;
 		setRespawnTime(5);
 	}
 

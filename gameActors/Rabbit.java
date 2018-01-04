@@ -57,20 +57,34 @@ public abstract class Rabbit extends GameElement {
 	}
 
 	public boolean isMale() {
-		return male;
+		return this.male;
 	}
 
-	public void eat(Carrot c) {
+	/**
+	 * Consomme la RegularCarrot et augmente la vie du Rabbit
+	 * 
+	 * @param c 	la RegularCarrot consommee
+	 */
+	public void eat(RegularCarrot c) {
 		c.setEaten();
-		gainLife(1);
+		this.setLife(this.life + 1);
 	}
 
-	public void gainLife(int nb) {
-		life = life + nb;
+	/**
+	 * Consomme la PoisonCarrot et fait mourir le Rabbit
+	 * 
+	 * @param c 	la PoisonCarrot consommee
+	 */
+	public void eat(PoisonCarrot c) {
+		c.setEaten();
+		this.setLife(0);
 	}
 
-	public void die() {
-		life = 0;
+	public void setLife(int life) {
+		if(life == 0) {
+			Controller.getInstance().kill(this);
+		}
+		this.life = life;
 	}
 
 	/**
@@ -95,16 +109,16 @@ public abstract class Rabbit extends GameElement {
 			Direction direction = directions[i];
 
 			if(direction.equals(Direction.UP) && li > 0) {
-				System.out.println("up");
+				//System.out.println("up");
 				li--;
 			} else if(direction.equals(Direction.DOWN) && li < Constants.getMapHeight() - 1) {
-				System.out.println("down");
+				//System.out.println("down");
 				li++;
 			} else if(direction.equals(Direction.LEFT) && co > 0) {
-				System.out.println("left");
+				//System.out.println("left");
 				co--;
 			} else if(direction.equals(Direction.RIGHT) && co < Constants.getMapWidth() - 1) {
-				System.out.println("right");
+				//System.out.println("right");
 				co++;
 			}
 

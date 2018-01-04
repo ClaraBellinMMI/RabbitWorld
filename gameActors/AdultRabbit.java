@@ -20,22 +20,22 @@ public class AdultRabbit extends Rabbit {
 	}
 
 	/**
-	 * Renvoie un booleen indiquant si ce AdultRabbit peut se reproduire avec r
+	 * Fait se reproduire le AdultRabbit avec r si possible
 	 * 
-	 * @param r 	Rabbit avec qui on teste la possibilite de se reproduire
-	 * @return 		booleen de possibilite de reproduction avec r
+	 * @param r 	Rabbit avec qui on veut reproduire
 	 */
-	public boolean reproduce(Rabbit r) {
+	public void reproduce(Rabbit r) {
 		boolean sexR = r.isMale();
 		if(this.isMale() != sexR && this.age >= Constants.getAdultAge()) {
-			return true;
+			// reproduce(
+			// Controller.getInstance().reproduce(this, r);
 		}
-		return false;
 	}
 
 	@Override
 	public Cell move() {
-		this.life = this.life - 1;
+		this.age++;
+		this.life--;
 		return nextCell();	
 	}
 

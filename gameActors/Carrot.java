@@ -5,8 +5,6 @@ import gameEngine.*;
 public abstract class Carrot extends GameElement {
 	private static int nb = 0;
 	protected int id;
-	//je l'ai mis en protected (eaten) pour y acceder dans les sous classe de carrot 
-	//j'ai voulu faire un setEaten mais je ne veux pas changer tes fonctions 
 	protected boolean eaten;
 	private int respawnTime;
 
@@ -17,12 +15,6 @@ public abstract class Carrot extends GameElement {
 	}
 
 	public abstract void setEaten();
-	/* *
-	 * pseudo code de setEaten() 
-	 * - changer le booleen 
-	 * - changer le respawn time
-	 * selon la classe
-	 * */
 
 	public int getId() {
 		return this.id;
@@ -32,7 +24,6 @@ public abstract class Carrot extends GameElement {
 		return this.eaten;
 	}
 
-	
 	public int getRespawnTime() {
 		return this.respawnTime;
 	}
@@ -40,6 +31,6 @@ public abstract class Carrot extends GameElement {
 	public void setRespawnTime(int respawnTime) {
 		this.respawnTime = respawnTime;
 	}
-	
-	
+
+
 }

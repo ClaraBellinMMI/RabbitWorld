@@ -7,7 +7,7 @@ public class PoisonCarrot extends Carrot {
 
 	@Override
 	public void setEaten() {
-		eaten = false;
+		this.eaten = true;
 		setRespawnTime(10);
 	}
 

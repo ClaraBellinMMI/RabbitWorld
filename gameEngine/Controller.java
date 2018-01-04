@@ -17,12 +17,38 @@ import gameActors.RegularCarrot;
 
 public class Controller {
 	private static Controller INSTANCE;
-	private List<Cell> adultRabbits = new ArrayList<>();
-	private List<Cell> babyRabbits = new ArrayList<>();
-	private List<Cell> carrots = new ArrayList<>();
-	private List<Cell> poisons = new ArrayList<>();
-	private List<Cell> buffer = new ArrayList<>();
-	private Grid grid;
+	/**
+	 * Les AdultRabbit presents en jeu.
+	 */
+	private List<AdultRabbit> adultRabbits = new ArrayList<>();
+	/**
+	 * Les BabyRabbit presents en jeu.
+	 */
+	private List<BabyRabbit> babyRabbits = new ArrayList<>();
+	/**
+	 * Les Rabbit mort pendant le tour courant de jeu.
+	 */
+	private List<Rabbit> deadRabbits = new ArrayList<>();
+	/**
+	 * Les RegularCarrot presentes en jeu.
+	 */
+	private List<RegularCarrot> carrots = new ArrayList<>();
+	/**
+	 * Les PoisonCarrot presentes en jeu.
+	 */
+	private List<PoisonCarrot> poisons = new ArrayList<>();
+	/**
+	 * Le Carrot encore sous terre (qui vont etre bientot presentes en jeu).
+	 */
+	private List<Carrot> underground = new ArrayList<>();
+	/**
+	 * Les GameElements mis en tampon pour divers traitements.
+	 */
+	private List<GameElement> buffer = new ArrayList<>();
+	/**
+	 * La Grid sur laquelle le Controller agit.
+	 */
+	private Grid grid = new Grid(Constants.getMapWidth(), Constants.getMapHeight());
 
 	private Controller() {
 	}
@@ -37,20 +63,34 @@ public class Controller {
 	public Grid getGrid() {
 		return this.grid;
 	}
-	
-	public void rabbitBirth(Rabbit rabbit, Cell cell) {
-		adultRabbits.add(cell);
-		cell.setContent(rabbit);
+
+	public void rabbitBirth(boolean adult, int li, int co) {
+		if(0 < li && li < Constants.getMapHeight() && 0 < co && co < Constants.getMapWidth()) {
+			Random rd = new Random();
+			Rabbit r;
+			if(adult) {
+				r = new AdultRabbit(li, co, rd.nextBoolean());
+				this.adultRabbits.add((AdultRabbit)r);
+			} else {
+				r = new BabyRabbit(li, co, rd.nextBoolean());
+				this.babyRabbits.add((BabyRabbit)r);
+			}
+			this.grid.getCells()[li][co].setContent(r);
+		}
 	}
 
-	public void carrotGrowth(Carrot carrot, Cell cell) {
-		carrots.add(cell);
-		cell.setContent(carrot);
-	}
-
-	public void poisonGrowth(Carrot carrot, Cell cell) {
-		poisons.add(cell);
-		cell.setContent(carrot);
+	public void carrotGrowth(boolean regular, int li, int co) {
+		if(0 < li && li < Constants.getMapHeight() && 0 < co && co < Constants.getMapWidth()) {
+			Carrot c;
+			if(regular) {
+				c = new RegularCarrot(li, co);
+				this.carrots.add((RegularCarrot)c);
+			} else {
+				c = new PoisonCarrot(li, co);
+				this.poisons.add((PoisonCarrot)c);
+			}
+			this.grid.getCells()[li][co].setContent(c);
+		}
 	}
 
 	public int unsigned(String str) {
@@ -77,8 +117,6 @@ public class Controller {
 	}
 
 	public void init() throws IOException {
-		this.grid = new Grid(Constants.getMapWidth(), Constants.getMapHeight());
-
 		Random r = new Random();
 		int rli;
 		int rco;
@@ -90,7 +128,7 @@ public class Controller {
 				rli = r.nextInt(this.grid.getLi());
 				rco = r.nextInt(this.grid.getCo());
 				if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.rabbitBirth(new AdultRabbit(rli, rco, r.nextBoolean()), this.grid.getCells()[rli][rco]);
+					this.rabbitBirth(true, rli, rco);
 					placed = true;
 				}
 			} while(!placed);
@@ -102,8 +140,8 @@ public class Controller {
 			do {
 				rli = r.nextInt(this.grid.getLi());
 				rco = r.nextInt(this.grid.getCo());
-				if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.carrotGrowth(new RegularCarrot(rli, rco), this.grid.getCells()[rli][rco]);
+				if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+					this.carrotGrowth(true, rli, rco);
 					placed = true;
 				}
 			} while(!placed);
@@ -116,13 +154,20 @@ public class Controller {
 				rli = r.nextInt(this.grid.getLi());
 				rco = r.nextInt(this.grid.getCo());
 				if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.poisonGrowth(new PoisonCarrot(rli, rco), this.grid.getCells()[rli][rco]);
+					this.carrotGrowth(false, rli, rco);
 					placed = true;
 				}
 			} while(!placed);
 		}
 
 		this.grid.display();
+	}
+
+	public void kill(Rabbit r) {
+		this.deadRabbits.add(r);
+		int li = r.getPosLi();
+		int co = r.getPosCo();
+		this.grid.getCells()[li][co].setContent(new Dirt(li, co));
 	}
 
 	public void rot(RegularCarrot rc) {
@@ -132,52 +177,68 @@ public class Controller {
 	}
 
 	public void nextTurn() {
-		// deplacement des lapins
-		AdultRabbit ra = (AdultRabbit)this.adultRabbits.get(0).getContent();
-		int xa = ra.getPosLi();
-		int yA = ra.getPosCo();
-		this.adultRabbits.get(0).setContent(new Dirt(xa, yA));
-		Cell direction = ra.move();
-		direction.setContent(ra);
-		this.buffer.add(direction);
-		/*for(Cell c : this.adultRabbits) {
-			AdultRabbit r = ((AdultRabbit)c.getContent());
-			int x = r.getPosX();
-			int y = r.getPosY();
-			c.setContent(new Dirt(x, y));
-			Cell direction = r.move();
-			direction.setContent(r);
-			this.buffer.add(direction);
-		}*/
-		this.adultRabbits.clear();
-		this.adultRabbits.addAll(this.buffer);
-		this.buffer.clear();
-		
-		for(Cell c : this.babyRabbits) {
-			BabyRabbit r = ((BabyRabbit)c.getContent());
+		// Tableau temporaire pour traitement commun adultes et bebes
+		ArrayList<Rabbit> rabbs = new ArrayList<>();
+		rabbs.addAll(this.adultRabbits);
+		rabbs.addAll(this.babyRabbits);
+
+		/* * * deplacement des lapins * * */
+		for(Rabbit r : rabbs) {
 			int x = r.getPosLi();
 			int y = r.getPosCo();
-			c.setContent(new Dirt(x, y));
-			(r.move()).setContent(r);
+			this.grid.getCells()[x][y].setContent(new Dirt(x, y));
+			Cell direction = r.move();
+			GameElement content = direction.getContent();
+			direction.setContent(r);
+			/* * * possible consommation * * */
+			int indexCarrot = this.carrots.indexOf(content);
+			if(indexCarrot != -1) {
+				r.eat(this.carrots.get(indexCarrot));
+			} else if((indexCarrot = this.poisons.indexOf(content)) != -1) {
+				r.eat(this.poisons.get(indexCarrot));
+			}
 		}
-		// 		possible reproduction
-		// 		possible consommation
-		// 		possible mort
-		// vieillissement des carottes normales
-		for(Cell c : this.carrots) {
-			RegularCarrot carrot = ((RegularCarrot) c.getContent());
-			carrot.setLife(carrot.getLife() - 1);
-			if(carrot.getLife() == 0) {
+
+		/* * * MAJ lapins vivants (move et eat) * * */
+		this.adultRabbits.removeAll(this.deadRabbits);
+		this.babyRabbits.removeAll(this.deadRabbits);
+		this.deadRabbits.clear();
+
+		/* * * MAJ des carottes consommees + preparation des nouvelles a venir (eat) * * *
+		 * TODO Alex
+		 * */
+
+		/* * * Reproduction des lapins adultes * * *
+		 * Pseudo-pseudo-code : 
+		 * 		pour chaque lapin adulte
+		 * 			regarder autour du lapin 
+		 * 			si une case adjacente a un autre lapin adulte (eviter instanceof, privilegier le schema possible consommation dans le deplacement)
+		 * 				faire se reproduire le lapin
+		 * TODO Isis (Si possible. Met surtout la priorite sur le passage a l'age adulte qui est plus simple)
+		 */
+
+		/* * * Passage a l'age adulte pour les bebes concernes * * *
+		 * Traitement quasi-similaire au vieillissement des carottes normales
+		 * test a faire en fonction de la constante adultAge de la classe Constants
+		 * 
+		 * TODO Isis
+		 * */
+
+		/* * * MAJ des carottes normales : Vieillissement des carottes normales * * */
+		for(RegularCarrot c : this.carrots) {
+			c.setLife(c.getLife() - 1);
+			if(c.getLife() == 0) {
 				this.buffer.add(c);
 			}
 		}
-		
-		// maj des tableaux d'acteur
-		this.adultRabbits.removeAll(this.buffer);
 		this.carrots.removeAll(this.buffer);
 		this.poisons.removeAll(this.buffer);
 		this.buffer.clear();
 		
+		/* * * MAJ des carottes normales : Pousse * * *
+		 * TODO Alex
+		 * */
+
 		this.grid.display();
 	}
 }

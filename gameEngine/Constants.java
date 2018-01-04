@@ -1,8 +1,8 @@
 package gameEngine;
 
 public class Constants {
-	private static int mapWidth = 10;
-	private static int mapHeight = 10;
+	private static int mapWidth = 20;
+	private static int mapHeight = 20;
 	private static int adultAge = 8;
 	private static int minStarve = 5;
 	private static int maxStarve = 10;
