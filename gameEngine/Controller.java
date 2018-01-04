@@ -216,14 +216,47 @@ public class Controller {
 		 * 				faire se reproduire le lapin
 		 * TODO Isis (Si possible. Met surtout la priorite sur le passage a l'age adulte qui est plus simple)
 		 */
+		
+		for(AdultRabbit r : this.adultRabbits) {
+			int x = r.getPosLi();
+			int y = r.getPosCo();
+			int i, j;
+			for(i = x-1; i <= x+1; i++) {
+				for(j = y-1; j <= y+1; j++) {
+					GameElement neighbour = this.grid.getCells()[i][j].getContent();
+					// A SUPPRIMER !!!!!!!!!
+					//j'utilise equals mais peut etre serait-il mieux de creer une fonction 
+					//qui compare deux gameelement et qui renvoie true si ce sont deux lapins adultes
+					// dans AdultRabbit ? Je ne sais pas si c'est ce qu'il fallait faire
+					if(neighbour.equals(r)) {
+						AdultRabbit neighbourAdultR = (AdultRabbit)neighbour;
+						if(neighbourAdultR.isMale())
+							neighbourAdultR.reproduce(r);
+					}
+				}
+			}
+		}
 
 		/* * * Passage a l'age adulte pour les bebes concernes * * *
 		 * Traitement quasi-similaire au vieillissement des carottes normales
 		 * test a faire en fonction de la constante adultAge de la classe Constants
 		 * 
 		 * TODO Isis
+		 * A SUPPRIMER !!!!!!!!!
+		 * Je ne sais pas bien comment on dit qu'il est passé à adulte..Que via le buffer ou
+		 * il me manque une ligne de transformation ? 
 		 * */
-
+		
+		for(BabyRabbit babyR : this.babyRabbits) {
+			int babyAge = babyR.getAge();
+			if(babyAge == Constants.getAdultAge()) {
+				this.buffer.add(babyR);
+			}
+		}
+		this.babyRabbits.removeAll(this.buffer);
+		this.adultRabbits.removeAll(this.buffer);
+		this.buffer.clear();
+		
 		/* * * MAJ des carottes normales : Vieillissement des carottes normales * * */
 		for(RegularCarrot c : this.carrots) {
 			c.setLife(c.getLife() - 1);
