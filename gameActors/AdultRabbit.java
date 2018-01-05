@@ -28,8 +28,8 @@ public class AdultRabbit extends Rabbit {
 	public void reproduce(Rabbit r) {
 		boolean sexR = r.isMale();
 		if(this.isMale() != sexR && this.age >= Constants.getAdultAge()) {
-			this.reproduce(r);
-			//Controller.getInstance().reproduce(this, r);
+			//this.reproduce(r);
+			Controller.getInstance().reproduce(this, r);
 		}
 	}
 

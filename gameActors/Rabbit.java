@@ -56,13 +56,6 @@ public abstract class Rabbit extends GameElement {
 		return this.age;
 	}
 
-	public void setAge(int age, BabyRabbit r) {
-		this.age = age;
-		if(this.age == Constants.getAdultAge()) {
-			Controller.getInstance().grow(r); 
-		}
-	}
-
 	public boolean isMale() {
 		return this.male;
 	}

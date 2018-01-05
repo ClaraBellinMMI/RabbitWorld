@@ -187,6 +187,10 @@ public class Controller {
 		this.adultRabbits.add(newAdult);
 		this.grid.getCells()[x][y].setContent(newAdult);	
 	}
+	
+	public void reproduce(AdultRabbit ar, Rabbit r) {
+		System.out.println("BR");
+	}
 
 	public void nextTurn() {
 		// Tableau temporaire pour traitement commun adultes et bebes
@@ -234,8 +238,8 @@ public class Controller {
 				int x = r.getPosLi();
 				int y = r.getPosCo();
 				int i, j;
-				for(i = x-1; i <= x+1; i++) {
-					for(j = y-1; j <= y+1; j++) {
+				for(i = x-1; i <= x+1 && 0 < i && i < 20; i++) {
+					for(j = y-1; j <= y+1 && 0 < j && j < 20; j++) {
 						GameElement neighbour = this.grid.getCells()[i][j].getContent();
 						int indexRabbit = this.adultRabbits.indexOf(neighbour);
 						if(indexRabbit != -1) {

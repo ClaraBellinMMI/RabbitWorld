@@ -1,6 +1,8 @@
 package gameActors;
 
 import gameEngine.Cell;
+import gameEngine.Constants;
+import gameEngine.Controller;
 
 /**
  * Bebe Lapin.
@@ -18,21 +20,17 @@ public class BabyRabbit extends Rabbit {
 		this.age = 0;
 	}
 
+	public void setAge(int age) {
+		this.age = age;
+		if(this.age == Constants.getAdultAge()) {
+			Controller.getInstance().grow(this); 
+		}
+	}
+	
 	@Override
 	public Cell move() {
 		this.life = this.life - 2;
-		/*
-		 *
-		 * ICI PROBLEME 
-		 * suivant ce que j'ai fait et je ne sais pas si c'est bon
-		 * setAge doit prendre 2 arguments dont un bebe lapin
-		 * or ici je n'ai pas de bebes lapins dispos
-		 * j'ai essayé de le mettre en argt mais je n'ai pas compris pourquoi 
-		 * (probablement car c'est du polymorphisme si j'ai bien compris)
-		 * et comme je ne veux pas toucher à ce que tu as fait ben je ne sais pas quoi faire
-		 * 
-		 */
-		this.setAge(this.age + 1, r);
+		this.setAge(this.age + 1);
 		return nextCell();	
 	}
 
