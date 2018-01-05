@@ -7,7 +7,7 @@ import gameEngine.Controller;
 public class Client {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		Controller.getInstance().init();
-		for(int i = 0; i < 10; i++) {
+		while(true) {
 			Controller.getInstance().nextTurn();
 			Thread.sleep(1000);
 		}

@@ -35,7 +35,7 @@ public class AdultRabbit extends Rabbit {
 	@Override
 	public Cell move() {
 		this.age++;
-		this.life--;
+		this.setLife(this.life - 1);;
 		return nextCell();	
 	}
 

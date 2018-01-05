@@ -20,7 +20,7 @@ public class BabyRabbit extends Rabbit {
 
 	@Override
 	public Cell move() {
-		this.life = this.life - 2;
+		this.setLife(this.life - 2);
 		return nextCell();	
 	}
 

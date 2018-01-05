@@ -1,5 +1,7 @@
 package gameActors;
 
+import gameEngine.Controller;
+
 public class PoisonCarrot extends Carrot {
 	public PoisonCarrot(int x, int y) {
 		super(x, y);
@@ -7,8 +9,8 @@ public class PoisonCarrot extends Carrot {
 
 	@Override
 	public void setEaten() {
-		this.eaten = true;
-		setRespawnTime(10);
+		this.setRespawnTime(10);
+		Controller.getInstance().setEaten(this);
 	}
 
 	@Override

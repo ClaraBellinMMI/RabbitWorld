@@ -79,12 +79,16 @@ public abstract class Rabbit extends GameElement {
 		c.setEaten();
 		this.setLife(0);
 	}
+	
+	public int getLife() {
+		return this.life;
+	}
 
 	public void setLife(int life) {
-		if(life == 0) {
+		this.life = life;
+		if(this.life <= 0) {
 			Controller.getInstance().kill(this);
 		}
-		this.life = life;
 	}
 
 	/**

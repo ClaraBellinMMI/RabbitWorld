@@ -5,7 +5,6 @@ import gameEngine.*;
 public abstract class Carrot extends GameElement {
 	private static int nb = 0;
 	protected int id;
-	protected boolean eaten;
 	private int respawnTime;
 
 	protected Carrot(int x, int y) {
@@ -18,10 +17,6 @@ public abstract class Carrot extends GameElement {
 
 	public int getId() {
 		return this.id;
-	}
-
-	public boolean isEaten() {
-		return this.eaten;
 	}
 
 	public int getRespawnTime() {
