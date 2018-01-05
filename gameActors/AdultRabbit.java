@@ -2,6 +2,7 @@ package gameActors;
 
 import gameEngine.Cell;
 import gameEngine.Constants;
+import gameEngine.Controller;
 
 /**
  * Lapin Adulte.
@@ -27,8 +28,8 @@ public class AdultRabbit extends Rabbit {
 	public void reproduce(Rabbit r) {
 		boolean sexR = r.isMale();
 		if(this.isMale() != sexR && this.age >= Constants.getAdultAge()) {
-			// reproduce(
-			// Controller.getInstance().reproduce(this, r);
+			this.reproduce(r);
+			//Controller.getInstance().reproduce(this, r);
 		}
 	}
 
