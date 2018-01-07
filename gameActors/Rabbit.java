@@ -24,8 +24,19 @@ public abstract class Rabbit extends GameElement {
 	protected int life;
 	protected int age;
 	private boolean male;
+	/**
+	 * Booleen indiquant si ce Rabbit s'est reproduit.
+	 */
+	protected boolean reproduced;
 
 	/* * * * * * * * * */
+
+	/**
+	 * Consomme la RegularCarrot et augmente la vie du Rabbit
+	 * 
+	 * @param c 	la RegularCarrot consommee
+	 */
+	public abstract void eat(RegularCarrot c);
 
 	/**
 	 * Renvoie la Cell vers laquelle le Rabbit va se deplacer
@@ -46,6 +57,7 @@ public abstract class Rabbit extends GameElement {
 		this.id = Rabbit.nb++;
 		this.life = 10;
 		this.male = isMale;
+		this.reproduced = false;
 	}
 
 	public int getId() {
@@ -60,14 +72,12 @@ public abstract class Rabbit extends GameElement {
 		return this.male;
 	}
 
-	/**
-	 * Consomme la RegularCarrot et augmente la vie du Rabbit
-	 * 
-	 * @param c 	la RegularCarrot consommee
-	 */
-	public void eat(RegularCarrot c) {
-		c.setEaten();
-		this.setLife(this.life + 1);
+	public boolean hasReproduced() {
+		return this.reproduced;
+	}
+
+	public void setReproduced(boolean r) {
+		this.reproduced = r;
 	}
 
 	/**
@@ -79,7 +89,7 @@ public abstract class Rabbit extends GameElement {
 		c.setEaten();
 		this.setLife(0);
 	}
-	
+
 	public int getLife() {
 		return this.life;
 	}

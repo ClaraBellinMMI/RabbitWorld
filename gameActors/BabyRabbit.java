@@ -1,6 +1,8 @@
 package gameActors;
 
 import gameEngine.Cell;
+import gameEngine.Constants;
+import gameEngine.Controller;
 
 /**
  * Bebe Lapin.
@@ -18,10 +20,25 @@ public class BabyRabbit extends Rabbit {
 		this.age = 0;
 	}
 
+	public void setAge(int age) {
+		this.age = age;
+		if(this.age >= Constants.getAdultAge()) {
+			Controller.getInstance().grow(this); 
+		}
+	}
+
+	@Override
+	public void eat(RegularCarrot c) {
+		c.setEaten();
+		this.setLife(this.life + 2);
+	}
+
 	@Override
 	public Cell move() {
 		this.setLife(this.life - 2);
-		return nextCell();	
+		Cell next = nextCell();	
+		this.setAge(this.age + 1);
+		return next;
 	}
 
 	@Override

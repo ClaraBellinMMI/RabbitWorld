@@ -30,10 +30,6 @@ public class Controller {
 	 */
 	private List<Rabbit> deadRabbits = new ArrayList<>();
 	/**
-	 * Les BabyRabbit qui ont grandi pendant le tour courant de jeu.
-	 */
-	private List<BabyRabbit> grownUpRabbits = new ArrayList<>();
-	/**
 	 * Les RegularCarrot presentes en jeu.
 	 */
 	private List<RegularCarrot> carrots = new ArrayList<>();
@@ -58,7 +54,7 @@ public class Controller {
 	 */
 	private Grid grid = new Grid(Constants.getMapWidth(), Constants.getMapHeight());
 	Random random = new Random();
-	
+
 	private Controller() {
 	}
 
@@ -191,6 +187,30 @@ public class Controller {
 		this.grid.getCells()[x][y].setContent(newPoison);
 	}
 
+	public void grow(BabyRabbit r) {
+		int x = r.getPosLi();
+		int y = r.getPosCo();
+		this.babyRabbits.remove(r);
+		AdultRabbit newAdult = new AdultRabbit(x, y, r.isMale());
+		this.adultRabbits.add(newAdult);
+	}
+
+	public void reproduce(AdultRabbit ar, Rabbit r) {
+		int nbBabyLeft = 4;
+		int x = ar.getPosLi();
+		int y = ar.getPosCo();
+		int i, j;
+		for(i = x - 1; nbBabyLeft > 0 && i <= x + 1 && 0 < i && i < Constants.getMapWidth(); i++) {
+			for(j = y - 1; nbBabyLeft > 0 && j <= y + 1 && 0 < j && j < Constants.getMapHeight(); j++) {
+				if(this.grid.getCells()[i][j].isEmpty()) {
+					this.rabbitBirth(false, i, j);
+					nbBabyLeft--;
+				}
+			}
+		}
+		System.out.println("BR");
+	}
+
 	public void nextTurn() {
 		// Tableau temporaire pour traitement commun adultes et bebes
 		ArrayList<Rabbit> rabbs = new ArrayList<>();
@@ -202,6 +222,7 @@ public class Controller {
 			int x = r.getPosLi();
 			int y = r.getPosCo();
 			this.grid.getCells()[x][y].setContent(new Dirt(x, y));
+			/* * * possible passage a l'age adulte * * */
 			Cell direction = r.move();
 			if(r.getLife() > 0) {
 				GameElement content = direction.getContent();
@@ -243,12 +264,39 @@ public class Controller {
 		 * TODO Isis (Si possible. Met surtout la priorite sur le passage a l'age adulte qui est plus simple)
 		 */
 
-		/* * * Passage a l'age adulte pour les bebes concernes * * *
-		 * Traitement quasi-similaire au vieillissement des carottes normales
-		 * test a faire en fonction de la constante adultAge de la classe Constants
-		 * 
-		 * TODO Isis
-		 * */
+		for(AdultRabbit r : this.adultRabbits) {
+			if(!r.isMale()) {
+				int x = r.getPosLi();
+				int y = r.getPosCo();
+				List<Cell> adjCells = new ArrayList<>();
+				// haut
+				if((x - 1) >= 0) {
+					adjCells.add(this.grid.getCells()[x - 1][y]);
+				}
+				// bas
+				if((x + 1) < Constants.getMapHeight()) {
+					adjCells.add(this.grid.getCells()[x + 1][y]);
+				}
+				// gauche
+				if((y - 1) >= 0) {
+					adjCells.add(this.grid.getCells()[x][y - 1]);
+				}
+				// droite
+				if((y + 1) < Constants.getMapWidth()) {
+					adjCells.add(this.grid.getCells()[x][y + 1]);
+				}
+				
+				for(Cell cell : adjCells) {
+					if(!r.hasReproduced()) {
+						GameElement adj = cell.getContent();
+						int indexRabbit = this.adultRabbits.indexOf(adj);
+						if(indexRabbit != -1) {
+							r.reproduce(this.adultRabbits.get(indexRabbit));
+						}
+					}
+				}
+			}
+		}
 
 		/* * * MAJ des carottes normales : Vieillissement des carottes normales * * */
 		for(RegularCarrot c : this.carrots) {

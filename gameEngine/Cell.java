@@ -39,10 +39,12 @@ public class Cell {
 	public void setContent(GameElement content) {
 		this.content = content;
 		this.occupied = false;
+		this.empty = true;
 	}
 	
 	public void setContent(Rabbit content) {
 		this.content = content;
 		this.occupied = true;
+		this.empty = false;
 	}
 }
