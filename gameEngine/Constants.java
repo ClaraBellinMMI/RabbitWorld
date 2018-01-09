@@ -8,6 +8,8 @@ public class Constants {
 	private static int maxStarve = 10;
 	private static int carrotLife = 10;
 	private static int maxRespawnCarrot = 10;
+	private static String pathTileset1 = "./RW_Tileset.png";
+	private static String pathTileset2 = "./RW_Charset.png";
 
 	public static int getMapWidth() {
 		return mapWidth;
@@ -32,9 +34,17 @@ public class Constants {
 	public static int getCarrotLife() {
 		return carrotLife;
 	}
-	
+
 	public static int getMaxRespawnCarrot() {
 		return maxRespawnCarrot;
+	}
+
+	public static String getPathTileset1() {
+		return pathTileset1;
+	}
+
+	public static String getPathTileset2() {
+		return pathTileset2;
 	}
 
 	private Constants() {

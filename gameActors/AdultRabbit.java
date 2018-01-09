@@ -1,8 +1,11 @@
 package gameActors;
 
+import java.awt.Graphics;
+
 import gameEngine.Cell;
 import gameEngine.Constants;
 import gameEngine.Controller;
+import gameInterface.CharsetRW;
 
 /**
  * Lapin Adulte.
@@ -53,5 +56,13 @@ public class AdultRabbit extends Rabbit {
 			System.out.print('M');
 		else
 			System.out.print('F');
+	}
+
+	@Override
+	public void draw(Graphics g, int x, int y) {
+		if(this.isMale())
+			CharsetRW.getInstance().getAdultMaleDown1().drawTile(g, x, y);
+		else
+			CharsetRW.getInstance().getAdultFemaleDown0().drawTile(g, x, y);
 	}
 }

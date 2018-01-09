@@ -1,6 +1,6 @@
 package gameEngine;
 
-public abstract class GameElement implements Displayable {
+public abstract class GameElement implements Displayable, Drawable {
 	/**
 	 * Position en ligne du GameElement
 	 */

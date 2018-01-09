@@ -1,8 +1,11 @@
 package gameActors;
 
+import java.awt.Graphics;
+
 import gameEngine.Cell;
 import gameEngine.Constants;
 import gameEngine.Controller;
+import gameInterface.CharsetRW;
 
 /**
  * Bebe Lapin.
@@ -47,5 +50,10 @@ public class BabyRabbit extends Rabbit {
 			System.out.print('m');
 		else
 			System.out.print('f');
+	}
+
+	@Override
+	public void draw(Graphics g, int x, int y) {
+		CharsetRW.getInstance().getAdultMaleUp1().drawTile(g, x, y);
 	}
 }
