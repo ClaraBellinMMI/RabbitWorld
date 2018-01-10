@@ -66,6 +66,7 @@ public class Controller {
 	 */
 	private Map map;
 	Random random = new Random();
+	private boolean gameover;
 
 	private Controller() {
 	}
@@ -76,25 +77,29 @@ public class Controller {
 		}
 		return INSTANCE;
 	}
+	
+	public boolean gameOver() {
+		return this.gameover;
+	}
 
 	public Grid getGrid() {
 		return this.grid;
 	}
 
 	public List<AdultRabbit> getAdultRabbits() {
-		return adultRabbits;
+		return this.adultRabbits;
 	}
 
 	public List<BabyRabbit> getBabyRabbits() {
-		return babyRabbits;
+		return this.babyRabbits;
 	}
 
 	public List<RegularCarrot> getCarrots() {
-		return carrots;
+		return this.carrots;
 	}
 
 	public List<PoisonCarrot> getPoisons() {
-		return poisons;
+		return this.poisons;
 	}
 
 	/**
@@ -225,6 +230,8 @@ public class Controller {
 				}
 			} while(!placed);
 		}
+		
+		this.gameover = false;
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.window = new Window(screenSize.width, screenSize.height);
@@ -318,99 +325,105 @@ public class Controller {
 		rabbs.addAll(this.adultRabbits);
 		rabbs.addAll(this.babyRabbits);
 
-		/* * * deplacement des lapins * * */
-		for(Rabbit r : rabbs) {
-			int x = r.getPosLi();
-			int y = r.getPosCo();
-			this.grid.getCells()[x][y].setContent(new Dirt(x, y));
-			/* * * possible passage a l'age adulte * * */
-			Cell direction = r.move();
-			if(r.getLife() > 0) {
-				GameElement content = direction.getContent();
-				direction.setContent(r);
-				/* * * possible consommation * * */
-				int indexCarrot = this.carrots.indexOf(content);
-				if(indexCarrot != -1) {
-					r.eat(this.carrots.get(indexCarrot));
-				} else if((indexCarrot = this.poisons.indexOf(content)) != -1) {
-					r.eat(this.poisons.get(indexCarrot));
-				}
-			}
-		}
-
-		/* * * MAJ lapins vivants (move et eat) * * */
-		this.adultRabbits.removeAll(this.deadRabbits);
-		this.babyRabbits.removeAll(this.deadRabbits);
-		this.deadRabbits.clear();
-
-		/* * * MAJ des carottes + preparation des nouvelles a venir (eat) * * */
-		for(Carrot c : this.deadCarrot) {
-			int respawnTime = c.getRespawnTime();
-			int rli = this.random.nextInt(this.grid.getLi());
-			int rco = this.random.nextInt(this.grid.getCo());
-			Carrot young = new RegularCarrot(rli, rco);
-			young.setRespawnTime(respawnTime);
-			this.underground.add(young);
-		}
-		this.carrots.removeAll(this.deadCarrot);
-		this.poisons.removeAll(this.deadCarrot);
-		this.deadCarrot.clear();
-
-		/* * * Reproduction des lapins adultes * * */
-		for(AdultRabbit r : this.adultRabbits) {
-			if(!r.isMale()) {
+		if(rabbs.size() > 0) {
+			/* * * deplacement des lapins * * */
+			for(Rabbit r : rabbs) {
 				int x = r.getPosLi();
 				int y = r.getPosCo();
-				List<Cell> adjCells = new ArrayList<>();
-				// haut
-				if((x - 1) >= 0) {
-					adjCells.add(this.grid.getCells()[x - 1][y]);
+				this.grid.getCells()[x][y].setContent(new Dirt(x, y));
+				/* * * possible passage a l'age adulte * * */
+				Cell direction = r.move();
+				if(r.getLife() > 0) {
+					GameElement content = direction.getContent();
+					direction.setContent(r);
+					/* * * possible consommation * * */
+					int indexCarrot = this.carrots.indexOf(content);
+					if(indexCarrot != -1) {
+						r.eat(this.carrots.get(indexCarrot));
+					} else if((indexCarrot = this.poisons.indexOf(content)) != -1) {
+						r.eat(this.poisons.get(indexCarrot));
+					}
 				}
-				// bas
-				if((x + 1) < Constants.getMapHeight()) {
-					adjCells.add(this.grid.getCells()[x + 1][y]);
-				}
-				// gauche
-				if((y - 1) >= 0) {
-					adjCells.add(this.grid.getCells()[x][y - 1]);
-				}
-				// droite
-				if((y + 1) < Constants.getMapWidth()) {
-					adjCells.add(this.grid.getCells()[x][y + 1]);
-				}
+			}
 
-				for(Cell cell : adjCells) {
-					if(!r.hasReproduced()) {
-						GameElement adj = cell.getContent();
-						int indexRabbit = this.adultRabbits.indexOf(adj);
-						if(indexRabbit != -1) {
-							r.reproduce(this.adultRabbits.get(indexRabbit));
+			/* * * MAJ lapins vivants (move et eat) * * */
+			this.adultRabbits.removeAll(this.deadRabbits);
+			this.babyRabbits.removeAll(this.deadRabbits);
+			this.deadRabbits.clear();
+
+			/* * * MAJ des carottes + preparation des nouvelles a venir (eat) * * */
+			for(Carrot c : this.deadCarrot) {
+				int respawnTime = c.getRespawnTime();
+				int rli = this.random.nextInt(this.grid.getLi());
+				int rco = this.random.nextInt(this.grid.getCo());
+				Carrot young = new RegularCarrot(rli, rco);
+				young.setRespawnTime(respawnTime);
+				this.underground.add(young);
+			}
+			this.carrots.removeAll(this.deadCarrot);
+			this.poisons.removeAll(this.deadCarrot);
+			this.deadCarrot.clear();
+
+			/* * * Reproduction des lapins adultes * * */
+			for(AdultRabbit r : this.adultRabbits) {
+				if(!r.isMale()) {
+					int x = r.getPosLi();
+					int y = r.getPosCo();
+					List<Cell> adjCells = new ArrayList<>();
+					// haut
+					if((x - 1) >= 0) {
+						adjCells.add(this.grid.getCells()[x - 1][y]);
+					}
+					// bas
+					if((x + 1) < Constants.getMapHeight()) {
+						adjCells.add(this.grid.getCells()[x + 1][y]);
+					}
+					// gauche
+					if((y - 1) >= 0) {
+						adjCells.add(this.grid.getCells()[x][y - 1]);
+					}
+					// droite
+					if((y + 1) < Constants.getMapWidth()) {
+						adjCells.add(this.grid.getCells()[x][y + 1]);
+					}
+
+					for(Cell cell : adjCells) {
+						if(!r.hasReproduced()) {
+							GameElement adj = cell.getContent();
+							int indexRabbit = this.adultRabbits.indexOf(adj);
+							if(indexRabbit != -1) {
+								r.reproduce(this.adultRabbits.get(indexRabbit));
+							}
 						}
 					}
 				}
 			}
-		}
 
-		/* * * MAJ des carottes normales : Vieillissement des carottes normales * * */
-		for(RegularCarrot c : this.carrots) {
-			c.setLife(c.getLife() - 1);
-		}
-		this.carrots.removeAll(this.deadCarrot);
-		this.deadCarrot.clear();
-
-		/* * * MAJ des carottes normales : Pousse * * */
-		for(Carrot c : this.underground) {
-			int respawnTime = c.getRespawnTime();
-			if(respawnTime == 0) {
-				this.carrotGrowth(true, c.getPosLi(), c.getPosCo());
-				this.buffer.add(c);
-			} else {
-				c.setRespawnTime(respawnTime - 1);
+			/* * * MAJ des carottes normales : Vieillissement des carottes normales * * */
+			for(RegularCarrot c : this.carrots) {
+				c.setLife(c.getLife() - 1);
 			}
-		}
-		this.underground.removeAll(this.buffer);
-		this.buffer.clear();
+			this.carrots.removeAll(this.deadCarrot);
+			this.deadCarrot.clear();
 
-		this.grid.display();
-	}
+			/* * * MAJ des carottes normales : Pousse * * */
+			for(Carrot c : this.underground) {
+				int respawnTime = c.getRespawnTime();
+				if(respawnTime == 0) {
+					this.carrotGrowth(true, c.getPosLi(), c.getPosCo());
+					this.buffer.add(c);
+				} else {
+					c.setRespawnTime(respawnTime - 1);
+				}
+			}
+			this.underground.removeAll(this.buffer);
+			this.buffer.clear();
+
+			this.map.repaint();
+			this.grid.display();
+		} else {
+			this.gameover = true;
+			System.out.println("GAME OVER");
+		}
+	} 
 }

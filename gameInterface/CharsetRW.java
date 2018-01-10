@@ -94,6 +94,70 @@ public class CharsetRW implements Tileset {
 		return tileset[2][7];
 	}
 
+	public Tile getBabyMaleUp0() {
+		return tileset[1][0];
+	}
+
+	public Tile getBabyMaleUp1() {
+		return tileset[1][1];
+	}
+
+	public Tile getBabyMaleDown0() {
+		return tileset[1][2];
+	}
+
+	public Tile getBabyMaleDown1() {
+		return tileset[1][3];
+	}
+
+	public Tile getBabyMaleLeft0() {
+		return tileset[1][4];
+	}
+
+	public Tile getBabyMaleLeft1() {
+		return tileset[1][5];
+	}
+
+	public Tile getBabyMaleRight0() {
+		return tileset[1][6];
+	}
+
+	public Tile getBabyMaleRight1() {
+		return tileset[1][7];
+	}
+
+	public Tile getBabyFemaleUp0() {
+		return tileset[3][0];
+	}
+
+	public Tile getBabyFemaleUp1() {
+		return tileset[3][1];
+	}
+
+	public Tile getBabyFemaleDown0() {
+		return tileset[3][2];
+	}
+
+	public Tile getBabyFemaleDown1() {
+		return tileset[3][3];
+	}
+
+	public Tile getBabyFemaleLeft0() {
+		return tileset[3][4];
+	}
+
+	public Tile getBabyFemaleLeft1() {
+		return tileset[3][5];
+	}
+
+	public Tile getBabyFemaleRight0() {
+		return tileset[3][6];
+	}
+
+	public Tile getBabyFemaleRight1() {
+		return tileset[3][7];
+	}
+
 	@Override
 	public Image getImage() {
 		return tilesetImg;
