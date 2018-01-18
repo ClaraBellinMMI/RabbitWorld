@@ -41,4 +41,16 @@ public class Tile {
 				tx , ty, tx + this.ts.getTileW(), ty + this.ts.getTileH(), 
 				null);
 	}
+
+	public void drawTileMid(Graphics g, int x, int y) {
+		int tx = this.numPosX * this.width;
+		int ty = this.numPosY * this.height;
+		g.drawImage(this.ts.getImage(), 
+				x * this.ts.getTileW() + this.ts.getTileW()/2, 
+				y * this.ts.getTileH() + this.ts.getTileH()/2, 
+				(x + 1) * this.ts.getTileW() + this.ts.getTileW()/2, 
+				(y + 1) * this.ts.getTileH() + this.ts.getTileH()/2, 
+				tx , ty, tx + this.ts.getTileW(), ty + this.ts.getTileH(), 
+				null);
+	}
 }

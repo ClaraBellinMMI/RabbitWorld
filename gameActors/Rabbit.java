@@ -27,6 +27,7 @@ public abstract class Rabbit extends GameElement {
 	 * Direction dans laquelle regarde le Rabbit.
 	 */
 	protected Direction pointingTo;
+	protected boolean moving;
 	private boolean male;
 	/**
 	 * Booleen indiquant si ce Rabbit s'est reproduit.
@@ -61,6 +62,7 @@ public abstract class Rabbit extends GameElement {
 		this.id = Rabbit.nb++;
 		this.life = 10;
 		this.pointingTo = Direction.DOWN;
+		this.moving = false;
 		this.male = isMale;
 		this.reproduced = false;
 	}
@@ -71,6 +73,14 @@ public abstract class Rabbit extends GameElement {
 
 	public int getAge() {
 		return this.age;
+	}
+
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean moving) {
+		this.moving = moving;
 	}
 
 	public boolean isMale() {

@@ -36,7 +36,7 @@ public class RegularCarrot extends Carrot {
 
 	@Override
 	public void setEaten() {
-		this.setRespawnTime(5);
+		this.setRespawnTime(Constants.getRespawnRegularCarrot());
 		Controller.getInstance().setEaten(this);
 	}
 

@@ -110,7 +110,7 @@ public class Controller {
 	 * @param li 	indice de ligne de la Grid ou faire apparaitre le Rabbit.
 	 * @param co 	indice de colonne de la Grid ou faire apparaitre le Rabbit.
 	 */
-	private void rabbitBirth(boolean adult, int li, int co) {
+	private void rabbitSpawn(boolean adult, int li, int co) {
 		if(0 <= li && li < Constants.getMapHeight() && 0 <= co && co < Constants.getMapWidth()) {
 			Random rd = new Random();
 			Rabbit r;
@@ -199,7 +199,7 @@ public class Controller {
 				rli = this.random.nextInt(this.grid.getLi());
 				rco = this.random.nextInt(this.grid.getCo());
 				if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.rabbitBirth(true, rli, rco);
+					this.rabbitSpawn(true, rli, rco);
 					placed = true;
 				}
 			} while(!placed);
@@ -308,7 +308,7 @@ public class Controller {
 			for(i = x - 1; nbBabyLeft > 0 && i <= x + 1 && 0 < i && i < Constants.getMapWidth(); i++) {
 				for(j = y - 1; nbBabyLeft > 0 && j <= y + 1 && 0 < j && j < Constants.getMapHeight(); j++) {
 					if(this.grid.getCells()[i][j].isEmpty()) {
-						this.rabbitBirth(false, i, j);
+						this.rabbitSpawn(false, i, j);
 						nbBabyLeft--;
 					}
 				}
@@ -318,8 +318,9 @@ public class Controller {
 
 	/**
 	 * Passe un tour de jeu et actualise la Grid en consequence.
+	 * @throws InterruptedException 
 	 */
-	public void nextTurn() {
+	public void nextTurn() throws InterruptedException {
 		// Tableau temporaire pour traitement commun adultes et bebes
 		ArrayList<Rabbit> rabbs = new ArrayList<>();
 		rabbs.addAll(this.adultRabbits);
@@ -332,7 +333,10 @@ public class Controller {
 				int y = r.getPosCo();
 				this.grid.getCells()[x][y].setContent(new Dirt(x, y));
 				/* * * possible passage a l'age adulte * * */
+				r.setMoving(true);
 				Cell direction = r.move();
+				this.window.repaint();
+				Thread.sleep(1000);
 				if(r.getLife() > 0) {
 					GameElement content = direction.getContent();
 					direction.setContent(r);
@@ -344,6 +348,7 @@ public class Controller {
 						r.eat(this.poisons.get(indexCarrot));
 					}
 				}
+				r.setMoving(false);
 			}
 
 			/* * * MAJ lapins vivants (move et eat) * * */

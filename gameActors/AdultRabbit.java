@@ -60,26 +60,29 @@ public class AdultRabbit extends Rabbit {
 
 	@Override
 	public void draw(Graphics g, int x, int y) {
-		if(this.isMale()) {
-			if(this.pointingTo == Direction.DOWN) {
-				CharsetRW.getInstance().getAdultMaleDown0().drawTile(g, x, y);
-			} else if(this.pointingTo == Direction.UP) {
-				CharsetRW.getInstance().getAdultMaleUp0().drawTile(g, x, y);
-			} else if(this.pointingTo == Direction.LEFT) {
-				CharsetRW.getInstance().getAdultMaleLeft0().drawTile(g, x, y);
+		if(!this.moving)
+			if(this.isMale()) {
+				if(this.pointingTo == Direction.DOWN) {
+					CharsetRW.getInstance().getAdultMaleDown0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.UP) {
+					CharsetRW.getInstance().getAdultMaleUp0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.LEFT) {
+					CharsetRW.getInstance().getAdultMaleLeft0().drawTile(g, x, y);
+				} else {
+					CharsetRW.getInstance().getAdultMaleRight0().drawTile(g, x, y);
+				}
 			} else {
-				CharsetRW.getInstance().getAdultMaleRight0().drawTile(g, x, y);
+				if(this.pointingTo == Direction.DOWN) {
+					CharsetRW.getInstance().getAdultFemaleDown0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.UP) {
+					CharsetRW.getInstance().getAdultFemaleUp0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.LEFT) {
+					CharsetRW.getInstance().getAdultFemaleLeft0().drawTile(g, x, y);
+				} else {
+					CharsetRW.getInstance().getAdultFemaleRight0().drawTile(g, x, y);
+				}
 			}
-		} else {
-			if(this.pointingTo == Direction.DOWN) {
-				CharsetRW.getInstance().getAdultFemaleDown0().drawTile(g, x, y);
-			} else if(this.pointingTo == Direction.UP) {
-				CharsetRW.getInstance().getAdultFemaleUp0().drawTile(g, x, y);
-			} else if(this.pointingTo == Direction.LEFT) {
-				CharsetRW.getInstance().getAdultFemaleLeft0().drawTile(g, x, y);
-			} else {
-				CharsetRW.getInstance().getAdultFemaleRight0().drawTile(g, x, y);
-			}
-		}
+		else
+			CharsetRW.getInstance().getAdultFemaleRight1().drawTile(g, x, y);
 	}
 }

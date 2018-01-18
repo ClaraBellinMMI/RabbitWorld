@@ -54,26 +54,29 @@ public class BabyRabbit extends Rabbit {
 
 	@Override
 	public void draw(Graphics g, int x, int y) {
-		if(this.isMale()) {
-			if(this.pointingTo == Direction.DOWN) {
-				CharsetRW.getInstance().getBabyMaleDown0().drawTile(g, x, y);
-			} else if(this.pointingTo == Direction.UP) {
-				CharsetRW.getInstance().getBabyMaleUp0().drawTile(g, x, y);
-			} else if(this.pointingTo == Direction.LEFT) {
-				CharsetRW.getInstance().getBabyMaleLeft0().drawTile(g, x, y);
+		if(!this.isMoving())
+			if(this.isMale()) {
+				if(this.pointingTo == Direction.DOWN) {
+					CharsetRW.getInstance().getBabyMaleDown0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.UP) {
+					CharsetRW.getInstance().getBabyMaleUp0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.LEFT) {
+					CharsetRW.getInstance().getBabyMaleLeft0().drawTile(g, x, y);
+				} else {
+					CharsetRW.getInstance().getBabyMaleRight0().drawTile(g, x, y);
+				}
 			} else {
-				CharsetRW.getInstance().getBabyMaleRight0().drawTile(g, x, y);
+				if(this.pointingTo == Direction.DOWN) {
+					CharsetRW.getInstance().getBabyFemaleDown0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.UP) {
+					CharsetRW.getInstance().getBabyFemaleUp0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.LEFT) {
+					CharsetRW.getInstance().getBabyFemaleLeft0().drawTile(g, x, y);
+				} else {
+					CharsetRW.getInstance().getBabyFemaleRight0().drawTile(g, x, y);
+				}
 			}
-		} else {
-			if(this.pointingTo == Direction.DOWN) {
-				CharsetRW.getInstance().getBabyFemaleDown0().drawTile(g, x, y);
-			} else if(this.pointingTo == Direction.UP) {
-				CharsetRW.getInstance().getBabyFemaleUp0().drawTile(g, x, y);
-			} else if(this.pointingTo == Direction.LEFT) {
-				CharsetRW.getInstance().getBabyFemaleLeft0().drawTile(g, x, y);
-			} else {
-				CharsetRW.getInstance().getBabyFemaleRight0().drawTile(g, x, y);
-			}
-		}
+		else
+			CharsetRW.getInstance().getBabyFemaleRight1().drawTile(g, x, y);
 	}
 }

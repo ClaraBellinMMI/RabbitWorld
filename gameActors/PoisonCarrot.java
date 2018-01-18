@@ -2,6 +2,7 @@ package gameActors;
 
 import java.awt.Graphics;
 
+import gameEngine.Constants;
 import gameEngine.Controller;
 import gameInterface.TilesetRW;
 
@@ -12,7 +13,7 @@ public class PoisonCarrot extends Carrot {
 
 	@Override
 	public void setEaten() {
-		this.setRespawnTime(10);
+		this.setRespawnTime(Constants.getRespawnPoisonCarrot());
 		Controller.getInstance().setEaten(this);
 	}
 
