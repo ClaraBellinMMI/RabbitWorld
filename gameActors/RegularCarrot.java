@@ -1,7 +1,10 @@
 package gameActors;
 
+import java.awt.Graphics;
+
 import gameEngine.Constants;
 import gameEngine.Controller;
+import gameInterface.TilesetRW;
 
 public class RegularCarrot extends Carrot {
 	/**
@@ -13,7 +16,7 @@ public class RegularCarrot extends Carrot {
 		super(x, y);
 		this.life = Constants.getCarrotLife();
 	}
-	
+
 	public int getLife() {
 		return life;
 	}
@@ -33,12 +36,17 @@ public class RegularCarrot extends Carrot {
 
 	@Override
 	public void setEaten() {
-		this.setRespawnTime(5);
+		this.setRespawnTime(Constants.getRespawnRegularCarrot());
 		Controller.getInstance().setEaten(this);
 	}
 
 	@Override
 	public void display() {
 		System.out.print("C");
+	}
+
+	@Override
+	public void draw(Graphics g, int x, int y) {
+		TilesetRW.getInstance().getCarrot().drawTile(g, x, y);
 	}
 }

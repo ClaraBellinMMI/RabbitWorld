@@ -8,13 +8,13 @@ import gameEngine.*;
  * Lapin.
  */
 public abstract class Rabbit extends GameElement {
-	private static int nb = 0;
-	private static enum Direction {
+	public static enum Direction {
 		UP, 
 		DOWN, 
 		LEFT, 
 		RIGHT
 	}
+	private static int nb = 0;
 	private final Direction[] directions = Direction.values();
 	private final Random RANDOM = new Random();
 
@@ -23,9 +23,25 @@ public abstract class Rabbit extends GameElement {
 	private int id;
 	protected int life;
 	protected int age;
+	/**
+	 * Direction dans laquelle regarde le Rabbit.
+	 */
+	protected Direction pointingTo;
+	protected boolean moving;
 	private boolean male;
+	/**
+	 * Booleen indiquant si ce Rabbit s'est reproduit.
+	 */
+	protected boolean reproduced;
 
 	/* * * * * * * * * */
+
+	/**
+	 * Consomme la RegularCarrot et augmente la vie du Rabbit
+	 * 
+	 * @param c 	la RegularCarrot consommee
+	 */
+	public abstract void eat(RegularCarrot c);
 
 	/**
 	 * Renvoie la Cell vers laquelle le Rabbit va se deplacer
@@ -45,7 +61,10 @@ public abstract class Rabbit extends GameElement {
 		super(x, y);
 		this.id = Rabbit.nb++;
 		this.life = 10;
+		this.pointingTo = Direction.DOWN;
+		this.moving = false;
 		this.male = isMale;
+		this.reproduced = false;
 	}
 
 	public int getId() {
@@ -56,18 +75,24 @@ public abstract class Rabbit extends GameElement {
 		return this.age;
 	}
 
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean moving) {
+		this.moving = moving;
+	}
+
 	public boolean isMale() {
 		return this.male;
 	}
 
-	/**
-	 * Consomme la RegularCarrot et augmente la vie du Rabbit
-	 * 
-	 * @param c 	la RegularCarrot consommee
-	 */
-	public void eat(RegularCarrot c) {
-		c.setEaten();
-		this.setLife(this.life + 1);
+	public boolean hasReproduced() {
+		return this.reproduced;
+	}
+
+	public void setReproduced(boolean r) {
+		this.reproduced = r;
 	}
 
 	/**
@@ -79,7 +104,7 @@ public abstract class Rabbit extends GameElement {
 		c.setEaten();
 		this.setLife(0);
 	}
-	
+
 	public int getLife() {
 		return this.life;
 	}
@@ -111,18 +136,15 @@ public abstract class Rabbit extends GameElement {
 			li = this.getPosLi();
 			co = this.getPosCo();
 			Direction direction = directions[i];
+			this.pointingTo = direction;
 
 			if(direction.equals(Direction.UP) && li > 0) {
-				//System.out.println("up");
 				li--;
 			} else if(direction.equals(Direction.DOWN) && li < Constants.getMapHeight() - 1) {
-				//System.out.println("down");
 				li++;
 			} else if(direction.equals(Direction.LEFT) && co > 0) {
-				//System.out.println("left");
 				co--;
 			} else if(direction.equals(Direction.RIGHT) && co < Constants.getMapWidth() - 1) {
-				//System.out.println("right");
 				co++;
 			}
 

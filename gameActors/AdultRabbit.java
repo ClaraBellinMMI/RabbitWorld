@@ -1,7 +1,11 @@
 package gameActors;
 
+import java.awt.Graphics;
+
 import gameEngine.Cell;
 import gameEngine.Constants;
+import gameEngine.Controller;
+import gameInterface.CharsetRW;
 
 /**
  * Lapin Adulte.
@@ -27,15 +31,22 @@ public class AdultRabbit extends Rabbit {
 	public void reproduce(Rabbit r) {
 		boolean sexR = r.isMale();
 		if(this.isMale() != sexR && this.age >= Constants.getAdultAge()) {
-			// reproduce(
-			// Controller.getInstance().reproduce(this, r);
+			this.reproduced = true;
+			Controller.getInstance().reproduce(this, r);
 		}
 	}
 
 	@Override
+	public void eat(RegularCarrot c) {
+		c.setEaten();
+		this.setLife(this.life + 1);
+	}
+
+	@Override
 	public Cell move() {
+		this.reproduced = false;
+		this.setLife(this.life - 1);
 		this.age++;
-		this.setLife(this.life - 1);;
 		return nextCell();	
 	}
 
@@ -45,5 +56,54 @@ public class AdultRabbit extends Rabbit {
 			System.out.print('M');
 		else
 			System.out.print('F');
+	}
+
+	@Override
+	public void draw(Graphics g, int x, int y) {
+		if(!this.moving) {
+			if(this.isMale()) {
+				if(this.pointingTo == Direction.DOWN) {
+					CharsetRW.getInstance().getAdultMaleDown0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.UP) {
+					CharsetRW.getInstance().getAdultMaleUp0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.LEFT) {
+					CharsetRW.getInstance().getAdultMaleLeft0().drawTile(g, x, y);
+				} else {
+					CharsetRW.getInstance().getAdultMaleRight0().drawTile(g, x, y);
+				}
+			} else {
+				if(this.pointingTo == Direction.DOWN) {
+					CharsetRW.getInstance().getAdultFemaleDown0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.UP) {
+					CharsetRW.getInstance().getAdultFemaleUp0().drawTile(g, x, y);
+				} else if(this.pointingTo == Direction.LEFT) {
+					CharsetRW.getInstance().getAdultFemaleLeft0().drawTile(g, x, y);
+				} else {
+					CharsetRW.getInstance().getAdultFemaleRight0().drawTile(g, x, y);
+				}
+			} 
+		} else {
+			if(this.isMale()) {
+				if(this.pointingTo == Direction.DOWN) {
+					CharsetRW.getInstance().getAdultMaleDown1().drawTile(g, x, y, this.pointingTo);
+				} else if(this.pointingTo == Direction.UP) {
+					CharsetRW.getInstance().getAdultMaleUp1().drawTile(g, x, y, this.pointingTo);
+				} else if(this.pointingTo == Direction.LEFT) {
+					CharsetRW.getInstance().getAdultMaleLeft1().drawTile(g, x, y, this.pointingTo);
+				} else {
+					CharsetRW.getInstance().getAdultMaleRight1().drawTile(g, x, y, this.pointingTo);
+				}
+			} else {
+				if(this.pointingTo == Direction.DOWN) {
+					CharsetRW.getInstance().getAdultFemaleDown1().drawTile(g, x, y, this.pointingTo);
+				} else if(this.pointingTo == Direction.UP) {
+					CharsetRW.getInstance().getAdultFemaleUp1().drawTile(g, x, y, this.pointingTo);
+				} else if(this.pointingTo == Direction.LEFT) {
+					CharsetRW.getInstance().getAdultFemaleLeft1().drawTile(g, x, y, this.pointingTo);
+				} else {
+					CharsetRW.getInstance().getAdultFemaleRight1().drawTile(g, x, y, this.pointingTo);
+				}
+			}
+		}
 	}
 }
