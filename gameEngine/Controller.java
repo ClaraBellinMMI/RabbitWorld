@@ -61,11 +61,25 @@ public class Controller {
 	 * Fenetre de l'IHM.
 	 */
 	private Window window;
+	
+	public Window getWindow() {
+		return window;
+	}
+
 	/**
 	 * La Map utilisee pour l'IHM.
 	 */
 	private Map map;
+	
+	public Map getMap() {
+		return map;
+	}
+
 	Random random = new Random();
+	
+	public Random getRandom() {
+		return random;
+	}
 
 	private Controller() {
 	}
@@ -105,7 +119,7 @@ public class Controller {
 	 * @param li 	indice de ligne de la Grid ou faire apparaitre le Rabbit.
 	 * @param co 	indice de colonne de la Grid ou faire apparaitre le Rabbit.
 	 */
-	private void rabbitBirth(boolean adult, int li, int co) {
+	public void rabbitBirth(boolean adult, int li, int co) {
 		if(0 <= li && li < Constants.getMapHeight() && 0 <= co && co < Constants.getMapWidth()) {
 			Random rd = new Random();
 			Rabbit r;
@@ -128,7 +142,7 @@ public class Controller {
 	 * @param li 		indice de ligne de la Grid ou faire apparaitre la Carrot.
 	 * @param co 		indice de colonne de la Grid ou faire apparaitre la Carrot.
 	 */
-	private void carrotGrowth(boolean regular, int li, int co) {
+	public void carrotGrowth(boolean regular, int li, int co) {
 		if(0 <= li && li < Constants.getMapHeight() && 0 <= co && co < Constants.getMapWidth()) {
 			Carrot c;
 			if(regular) {
@@ -150,7 +164,7 @@ public class Controller {
 	 * @return 		un entier naturel correspondant a la valeur numerique representee par str 
 	 * 				ou -1 si la String n'en represente pas un.
 	 */
-	private int unsigned(String str) {
+	public int unsigned(String str) {
 		try {
 			return Integer.parseInt(str);
 		} catch(NumberFormatException nfe) {
