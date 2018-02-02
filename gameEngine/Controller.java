@@ -101,6 +101,10 @@ public class Controller {
 	public List<PoisonCarrot> getPoisons() {
 		return this.poisons;
 	}
+	
+	public Window getWindow() {
+		return this.window;
+	}
 
 	/**
 	 * Fait apparaitre un Rabbit dans la Grid a la Cell specifiee par les parametres 
@@ -335,8 +339,6 @@ public class Controller {
 				/* * * possible passage a l'age adulte * * */
 				r.setMoving(true);
 				Cell direction = r.move();
-				this.window.repaint();
-				Thread.sleep(500);
 				if(r.getLife() > 0) {
 					GameElement content = direction.getContent();
 					direction.setContent(r);
@@ -348,7 +350,13 @@ public class Controller {
 						r.eat(this.poisons.get(indexCarrot));
 					}
 				}
-				r.setMoving(false);
+
+			}
+
+			this.window.repaint();
+			Thread.sleep(500);
+			for(Rabbit r : rabbs) {
+				r.setMoving(false);	
 			}
 
 			/* * * MAJ lapins vivants (move et eat) * * */
