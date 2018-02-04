@@ -197,55 +197,122 @@ public class Controller {
 	/**
 	 * Initialise la grille de jeu.
 	 */
-	public void init() throws IOException {
-		int rli;
-		int rco;
-		int nb = getInstance().inputNumber("lapins");
-		boolean placed;
-		for(int i = 0; i < nb; i++) {
-			placed = false;
-			do {
-				rli = this.random.nextInt(this.grid.getLi());
-				rco = this.random.nextInt(this.grid.getCo());
-				if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.rabbitBirth(true, rli, rco);
-					placed = true;
-				}
-			} while(!placed);
+	private int nb_field_rabbits;
+	private int nb_field_reg_carrots;
+	private int nb_field_pois_carrots;
+
+	public void setNb_field_rabbits(int nb_field_rabbits) {
+		this.nb_field_rabbits = nb_field_rabbits;
+	}
+
+	public void setNb_field_reg_carrots(int nb_field_reg_carrots) {
+		this.nb_field_reg_carrots = nb_field_reg_carrots;
+	}
+
+	public void setNb_field_pois_carrots(int nb_field_pois_carrots) {
+		this.nb_field_pois_carrots = nb_field_pois_carrots;
+	}
+
+	public void init(boolean ihm) throws IOException {
+		if(!ihm) {
+			int rli;
+			int rco;
+			int nb = getInstance().inputNumber("lapins");
+			boolean placed;
+			for(int i = 0; i < nb; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.rabbitBirth(true, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+	
+			nb = getInstance().inputNumber("carottes");
+			for (int i = 0; i < nb; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.carrotGrowth(true, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+	
+			nb = getInstance().inputNumber("carottes empoisonnees");
+			for (int i = 0; i < nb; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.carrotGrowth(false, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+	
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			this.window = new Window(screenSize.width, screenSize.height);
+			this.map = new Map();
+			this.window.add(this.map);
+	
+			this.grid.display();
+		}else {
+			int rli;
+			int rco;
+			//int nb = getInstance().inputNumber("lapins");
+			boolean placed;
+			for(int i = 0; i < nb_field_rabbits; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.rabbitBirth(true, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+	
+			//nb = getInstance().inputNumber("carottes");
+			for (int i = 0; i < nb_field_reg_carrots; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.carrotGrowth(true, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+	
+			//nb = getInstance().inputNumber("carottes empoisonnees");
+			for (int i = 0; i < nb_field_pois_carrots; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.carrotGrowth(false, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+	
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			this.window = new Window(screenSize.width, screenSize.height);
+			this.map = new Map();
+			this.window.add(this.map);
+	
+			this.grid.display();
 		}
-
-		nb = getInstance().inputNumber("carottes");
-		for (int i = 0; i < nb; i++) {
-			placed = false;
-			do {
-				rli = this.random.nextInt(this.grid.getLi());
-				rco = this.random.nextInt(this.grid.getCo());
-				if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.carrotGrowth(true, rli, rco);
-					placed = true;
-				}
-			} while(!placed);
-		}
-
-		nb = getInstance().inputNumber("carottes empoisonnees");
-		for (int i = 0; i < nb; i++) {
-			placed = false;
-			do {
-				rli = this.random.nextInt(this.grid.getLi());
-				rco = this.random.nextInt(this.grid.getCo());
-				if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.carrotGrowth(false, rli, rco);
-					placed = true;
-				}
-			} while(!placed);
-		}
-
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.window = new Window(screenSize.width, screenSize.height);
-		this.map = new Map();
-		this.window.add(this.map);
-
-		this.grid.display();
 	}
 
 	/**
