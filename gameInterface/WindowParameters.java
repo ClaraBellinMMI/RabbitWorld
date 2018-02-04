@@ -21,6 +21,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import gameEngine.Constants;
 import gameEngine.Controller;
 
 
@@ -76,7 +78,7 @@ public class WindowParameters extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
-			String fichier = "C:/Users//eclipse-workspace/RabbitWorld/src/lapin_bas_param.gif";
+			String fichier = Constants.getPathRabbitGif();
 			try {
 				BufferedImage im = ImageIO.read(new File(fichier));
 				g2.drawImage(im, 150, 10, 400, 140, null);
@@ -91,7 +93,7 @@ public class WindowParameters extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
-			String fichier = "C:/Users//eclipse-workspace/RabbitWorld/src/lapin_terrier.gif";
+			String fichier = Constants.getPathHoleGif();
 			try {
 				BufferedImage im = ImageIO.read(new File(fichier));
 				g2.drawImage(im, 10, 10, 220, 220, null);
@@ -122,7 +124,7 @@ public class WindowParameters extends JFrame {
 				Font f = new Font("Courier", Font.BOLD, 20);
 				g2.setFont(f);
 				g2.drawString("ERROR, PLEASE CORRECT YOUR INPUT FIELDS", 10, 30);
-				String fichier = "C:/Users//eclipse-workspace/RabbitWorld/src/lapin_erreur.png";
+				String fichier = Constants.getPathErrorGif();
 				try {
 					BufferedImage im = ImageIO.read(new File(fichier));
 					g2.drawImage(im, 120, 40, 180, 200, null);
@@ -192,7 +194,7 @@ public class WindowParameters extends JFrame {
 						Controller.getInstance().setNb_field_rabbits(rabbit_param);
 						Controller.getInstance().setNb_field_reg_carrots(reg_carrot_param);
 						Controller.getInstance().setNb_field_pois_carrots(pois_carrot_param);
-						Controller.getInstance().init(Controller.getInstance().isIhm());
+						Controller.getInstance().init(true);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}			

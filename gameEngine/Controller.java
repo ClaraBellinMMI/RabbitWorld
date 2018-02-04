@@ -223,7 +223,7 @@ public class Controller {
 	}
 
 	public void init(boolean ihm) throws IOException {
-		if(!isIhm()) {
+		if(!ihm) {
 			int rli;
 			int rco;
 			int nb = getInstance().inputNumber("lapins");
@@ -265,14 +265,7 @@ public class Controller {
 					}
 				} while(!placed);
 			}
-	
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			this.window = new Window(screenSize.width, screenSize.height);
-			this.map = new Map();
-			this.window.add(this.map);
-	
-			this.grid.display();
-		}else {
+		} else {
 			int rli;
 			int rco;
 			boolean placed;
@@ -309,12 +302,14 @@ public class Controller {
 					}
 				} while(!placed);
 			}
-	
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			this.window = new Window(screenSize.width, screenSize.height);
-			this.map = new Map();
-			this.window.add(this.map);
-	
+		}
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		this.window = new Window(screenSize.width, screenSize.height);
+		this.map = new Map();
+		this.window.add(this.map);
+		
+		if(!ihm) {
 			this.grid.display();
 		}
 	}
