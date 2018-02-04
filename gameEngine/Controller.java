@@ -200,6 +200,15 @@ public class Controller {
 	private int nb_field_rabbits;
 	private int nb_field_reg_carrots;
 	private int nb_field_pois_carrots;
+	private boolean ihm = false;
+	
+	public boolean isIhm() {
+		return ihm;
+	}
+
+	public void setIhm(boolean ihm) {
+		this.ihm = ihm;
+	}
 
 	public void setNb_field_rabbits(int nb_field_rabbits) {
 		this.nb_field_rabbits = nb_field_rabbits;
@@ -214,7 +223,7 @@ public class Controller {
 	}
 
 	public void init(boolean ihm) throws IOException {
-		if(!ihm) {
+		if(!isIhm()) {
 			int rli;
 			int rco;
 			int nb = getInstance().inputNumber("lapins");
@@ -266,7 +275,6 @@ public class Controller {
 		}else {
 			int rli;
 			int rco;
-			//int nb = getInstance().inputNumber("lapins");
 			boolean placed;
 			for(int i = 0; i < nb_field_rabbits; i++) {
 				placed = false;
@@ -279,8 +287,6 @@ public class Controller {
 					}
 				} while(!placed);
 			}
-	
-			//nb = getInstance().inputNumber("carottes");
 			for (int i = 0; i < nb_field_reg_carrots; i++) {
 				placed = false;
 				do {
@@ -292,8 +298,6 @@ public class Controller {
 					}
 				} while(!placed);
 			}
-	
-			//nb = getInstance().inputNumber("carottes empoisonnees");
 			for (int i = 0; i < nb_field_pois_carrots; i++) {
 				placed = false;
 				do {
@@ -494,4 +498,6 @@ public class Controller {
 
 		this.grid.display();
 	}
+
+	
 }

@@ -8,8 +8,7 @@ import gameInterface.WindowParameters;
 public class Client {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		new WindowParameters();
-		boolean ihm = true;
-		Controller.getInstance().init(ihm);
+		Controller.getInstance().init(Controller.getInstance().isIhm());
 /*		while(true) {
 			Controller.getInstance().nextTurn();
 			Thread.sleep(1000);

@@ -51,7 +51,7 @@ public class WindowParameters extends JFrame {
 		pann_ouest.setPreferredSize(new Dimension(260, 450));
 		pann_ouest.setBackground(Color.ORANGE);
 		add(pann_ouest, BorderLayout.WEST);
-		
+		this.toFront();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
@@ -76,7 +76,7 @@ public class WindowParameters extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
-			String fichier = "C:/Users/isis/Downloads/lapin_bas_param.gif";
+			String fichier = "C:/Users//eclipse-workspace/RabbitWorld/src/lapin_bas_param.gif";
 			try {
 				BufferedImage im = ImageIO.read(new File(fichier));
 				g2.drawImage(im, 150, 10, 400, 140, null);
@@ -91,12 +91,44 @@ public class WindowParameters extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
-			String fichier = "C:/Users/isis/Downloads/lapin_terrier.gif";
+			String fichier = "C:/Users//eclipse-workspace/RabbitWorld/src/lapin_terrier.gif";
 			try {
 				BufferedImage im = ImageIO.read(new File(fichier));
 				g2.drawImage(im, 10, 10, 220, 220, null);
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+		}
+	}
+	
+	private class Window_popup extends JFrame {
+		private static final long serialVersionUID = 1L;
+		public Window_popup() {
+			this.setTitle("ERROR");
+			this.setBounds(500, 250, 500, 280);
+			Panel_popup pan_pop = new Panel_popup();
+			pan_pop.setBackground(new Color(255,0,0,200));
+			this.add(pan_pop);
+			this.toFront();
+			this.setVisible(true);
+		}
+		
+		private class Panel_popup extends JPanel {
+			private static final long serialVersionUID = 1L;
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D)g;
+				g2.setColor(Color.yellow);
+				Font f = new Font("Courier", Font.BOLD, 20);
+				g2.setFont(f);
+				g2.drawString("ERROR, PLEASE CORRECT YOUR INPUT FIELDS", 10, 30);
+				String fichier = "C:/Users//eclipse-workspace/RabbitWorld/src/lapin_erreur.png";
+				try {
+					BufferedImage im = ImageIO.read(new File(fichier));
+					g2.drawImage(im, 120, 40, 180, 200, null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -144,84 +176,32 @@ public class WindowParameters extends JFrame {
 		}
 		
 		private class StartAction implements ActionListener {
-			String rabbit_param_str = nb_rabbits.getText();
-			String reg_carrot_param_str = nb_regular_carrots.getText();
-			String pois_carrot_param_str = nb_poison_carrots.getText();
-			
-			Integer rabbit_param = Controller.getInstance().unsigned(rabbit_param_str);
-			Integer reg_carrot_param = Controller.getInstance().unsigned(reg_carrot_param_str);
-			Integer pois_carrot_param = Controller.getInstance().unsigned(pois_carrot_param_str);
-			
-		//	Controller.getInstance().setNb_field_rabbits(rabbit_param);
-		//	Controller.getInstance().setNb_field_reg_carrots(reg_carrot_param);
-		//	Controller.getInstance().setNb_field_pois_carrots(pois_carrot_param);
-			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(rabbit_param != -1 || reg_carrot_param != -1 || pois_carrot_param != -1) {
-					JFrame pop_error = new JFrame();
-					pop_error.setTitle("Erreur de saisie");
-					pop_error.setBounds(500, 250, 100, 50);
-					Graphics g = getGraphics();
-					g.drawString("ERREUR DE SAISIE, VEUILLEZ RECOMMENCER", 10, 10);
-				} else {
+				String rabbit_param_str = nb_rabbits.getText();
+				String reg_carrot_param_str = nb_regular_carrots.getText();
+				String pois_carrot_param_str = nb_poison_carrots.getText();
+				
+				Integer rabbit_param = Controller.getInstance().unsigned(rabbit_param_str);
+				Integer reg_carrot_param = Controller.getInstance().unsigned(reg_carrot_param_str);
+				Integer pois_carrot_param = Controller.getInstance().unsigned(pois_carrot_param_str);
+				
+				Controller.getInstance().setIhm(true);
+				if(rabbit_param != -1 && reg_carrot_param != -1 && pois_carrot_param != -1) {
 					try {
-						boolean ihm = true;
-						Controller.getInstance().init(ihm);
+						Controller.getInstance().setNb_field_rabbits(rabbit_param);
+						Controller.getInstance().setNb_field_reg_carrots(reg_carrot_param);
+						Controller.getInstance().setNb_field_pois_carrots(pois_carrot_param);
+						Controller.getInstance().init(Controller.getInstance().isIhm());
 					} catch (IOException e) {
 						e.printStackTrace();
-					}
+					}			
+				} else {
+					new Window_popup();
 				}
 			}	
 		}
 		
 	}
-/**		public void init_grid(int rabbit_param, int reg_carrot_param, int pois_carrot_param) {
-			int rli;
-			int rco;
-			boolean placed;
-			for(int i = 0; i < rabbit_param; i++) {
-				placed = false;
-				do {
-					rli = Controller.getInstance().getRandom().nextInt(Controller.getInstance().getGrid().getLi());
-					rco = Controller.getInstance().getRandom().nextInt(Controller.getInstance().getGrid().getCo());
-					if(Controller.getInstance().getGrid().getCells()[rli][rco].getContent() instanceof Dirt) {
-						Controller.getInstance().rabbitBirth(true, rli, rco);
-						placed = true;
-					}
-				} while(!placed);
-			}
-			
-			for (int i = 0; i < reg_carrot_param; i++) {
-				placed = false;
-				do {
-					rli = Controller.getInstance().getRandom().nextInt(Controller.getInstance().getGrid().getLi());
-					rco = Controller.getInstance().getRandom().nextInt(Controller.getInstance().getGrid().getCo());
-					if(Controller.getInstance().getGrid().getCells()[rli][rco].getContent() instanceof Dirt) {
-						Controller.getInstance().carrotGrowth(true, rli, rco);
-						placed = true;
-					}
-				} while(!placed);
-			}
-			
-			for (int i = 0; i < pois_carrot_param; i++) {
-				placed = false;
-				do {
-					rli = Controller.getInstance().getRandom().nextInt(Controller.getInstance().getGrid().getLi());
-					rco = Controller.getInstance().getRandom().nextInt(Controller.getInstance().getGrid().getCo());
-					if (Controller.getInstance().getGrid().getCells()[rli][rco].getContent() instanceof Dirt) {
-						Controller.getInstance().carrotGrowth(false, rli, rco);
-						placed = true;
-					}
-				} while(!placed);
-			}
-
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			this.window = new Window(screenSize.width, screenSize.height);
-			this.map = new Map();
-			this.window.add(this.map);
-
-			this.grid.display();
-		}*/
-	}
+}
 
