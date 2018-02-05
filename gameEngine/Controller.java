@@ -25,48 +25,82 @@ public class Controller {
 	 * Les AdultRabbit presents en jeu.
 	 */
 	private List<AdultRabbit> adultRabbits = new ArrayList<>();
+
 	/**
 	 * Les BabyRabbit presents en jeu.
 	 */
 	private List<BabyRabbit> babyRabbits = new ArrayList<>();
+
 	/**
 	 * Les Rabbit mort pendant le tour courant de jeu.
 	 */
 	private List<Rabbit> deadRabbits = new ArrayList<>();
+
 	/**
 	 * Les RegularCarrot presentes en jeu.
 	 */
 	private List<RegularCarrot> carrots = new ArrayList<>();
+
 	/**
 	 * Les PoisonCarrot presentes en jeu.
 	 */
 	private List<PoisonCarrot> poisons = new ArrayList<>();
+
 	/**
 	 * Les Carrot disparues pendant ce tour de jeu (mangees ou devenues empoisonnees).
 	 */
 	private List<Carrot> deadCarrot = new ArrayList<>();
+
 	/**
 	 * Les Carrot encore sous terre (qui vont etre bientot presentes en jeu).
 	 */
 	private List<Carrot> underground = new ArrayList<>();
+
 	/**
 	 * List de GameElement servant a mettre a jour d'autre List d'acteurs.
 	 */
 	private List<GameElement> buffer = new ArrayList<>();
+
 	/**
 	 * La Grid sur laquelle le Controller agit.
 	 */
-	private Grid grid = new Grid(Constants.getMapWidth(), Constants.getMapHeight());
+	private Grid grid;
+
 	/**
 	 * Fenetre de l'IHM.
 	 */
 	private Window window;
+
 	/**
 	 * La Map utilisee pour l'IHM.
 	 */
 	private Map map;
-	Random random = new Random();
+
+	/**
+	 * Nombre de lapins saisi depuis l'IHM.
+	 */
+	private int nb_field_rabbits;
+
+	/**
+	 * Nombre de carottes saisi depuis l'IHM.
+	 */
+	private int nb_field_reg_carrots;
+
+	/**
+	 * Nombre de carottes empoisonnees saisi depuis l'IHM.
+	 */
+	private int nb_field_pois_carrots;
+
+	/**
+	 * Booleen indiquant si le controleur controle une partie en mode ihm.
+	 */
+	private boolean ihm = false;
+
+	/**
+	 * Booleen indiquant si la partie est terminee.
+	 */
 	private boolean gameover;
+	private Random random = new Random();
 
 	private Controller() {
 	}
@@ -76,14 +110,6 @@ public class Controller {
 			INSTANCE = new Controller();
 		}
 		return INSTANCE;
-	}
-	
-	public boolean gameOver() {
-		return this.gameover;
-	}
-
-	public Grid getGrid() {
-		return this.grid;
 	}
 
 	public List<AdultRabbit> getAdultRabbits() {
@@ -101,9 +127,41 @@ public class Controller {
 	public List<PoisonCarrot> getPoisons() {
 		return this.poisons;
 	}
-	
+
+	public Grid getGrid() {
+		return this.grid;
+	}
+
 	public Window getWindow() {
-		return this.window;
+		return window;
+	}
+
+	public Map getMap() {
+		return map;
+	}
+
+	public boolean isIhm() {
+		return ihm;
+	}
+
+	public void setIhm(boolean ihm) {
+		this.ihm = ihm;
+	}
+
+	public void setNb_field_rabbits(int nb_field_rabbits) {
+		this.nb_field_rabbits = nb_field_rabbits;
+	}
+
+	public void setNb_field_reg_carrots(int nb_field_reg_carrots) {
+		this.nb_field_reg_carrots = nb_field_reg_carrots;
+	}
+
+	public void setNb_field_pois_carrots(int nb_field_pois_carrots) {
+		this.nb_field_pois_carrots = nb_field_pois_carrots;
+	}
+
+	public boolean gameOver() {
+		return this.gameover;
 	}
 
 	/**
@@ -114,7 +172,7 @@ public class Controller {
 	 * @param li 	indice de ligne de la Grid ou faire apparaitre le Rabbit.
 	 * @param co 	indice de colonne de la Grid ou faire apparaitre le Rabbit.
 	 */
-	private void rabbitSpawn(boolean adult, int li, int co) {
+	public void rabbitSpawn(boolean adult, int li, int co) {
 		if(0 <= li && li < Constants.getMapHeight() && 0 <= co && co < Constants.getMapWidth()) {
 			Random rd = new Random();
 			Rabbit r;
@@ -137,7 +195,7 @@ public class Controller {
 	 * @param li 		indice de ligne de la Grid ou faire apparaitre la Carrot.
 	 * @param co 		indice de colonne de la Grid ou faire apparaitre la Carrot.
 	 */
-	private void carrotGrowth(boolean regular, int li, int co) {
+	public void carrotGrowth(boolean regular, int li, int co) {
 		if(0 <= li && li < Constants.getMapHeight() && 0 <= co && co < Constants.getMapWidth()) {
 			Carrot c;
 			if(regular) {
@@ -159,7 +217,7 @@ public class Controller {
 	 * @return 		un entier naturel correspondant a la valeur numerique representee par str 
 	 * 				ou -1 si la String n'en represente pas un.
 	 */
-	private int unsigned(String str) {
+	public int unsigned(String str) {
 		try {
 			return Integer.parseInt(str);
 		} catch(NumberFormatException nfe) {
@@ -176,13 +234,13 @@ public class Controller {
 	 */
 	private int inputNumber(String actor) throws IOException {
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Saisir nombre de " + actor + " : ");
+		System.out.println("Input number of " + actor + " : ");
 
 		int choix;
 		do {
 			choix = unsigned(bufferReader.readLine());
 			if(choix < 0) {
-				System.out.println("Mauvaise saisie, entier positif attendu");
+				System.out.println("Error, unsigned expected");
 			}
 		} while(choix < 0);
 
@@ -191,58 +249,108 @@ public class Controller {
 
 	/**
 	 * Initialise la grille de jeu.
+	 * 
+	 * @param ihm Booleen indiquant s'il s'agit d'une initialisation en mode IHM.
 	 */
-	public void init() throws IOException {
+	public void init(boolean ihm) throws IOException {
+		this.ihm = ihm;
+		this.gameover = false;
+		this.grid = new Grid(Constants.getMapWidth(), Constants.getMapHeight());
+		this.adultRabbits.clear();
+		this.babyRabbits.clear();
+		this.deadRabbits.clear();
+		this.carrots.clear();
+		this.poisons.clear();
+		this.deadCarrot.clear();
+		this.underground.clear();
+		this.buffer.clear();
+
 		int rli;
 		int rco;
-		int nb = getInstance().inputNumber("lapins");
 		boolean placed;
-		for(int i = 0; i < nb; i++) {
-			placed = false;
-			do {
-				rli = this.random.nextInt(this.grid.getLi());
-				rco = this.random.nextInt(this.grid.getCo());
-				if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.rabbitSpawn(true, rli, rco);
-					placed = true;
-				}
-			} while(!placed);
+		if(!ihm) {
+			int nb = getInstance().inputNumber("rabbits");
+			for(int i = 0; i < nb; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.rabbitSpawn(true, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+
+			nb = getInstance().inputNumber("carrots");
+			for(int i = 0; i < nb; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.carrotGrowth(true, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+
+			nb = getInstance().inputNumber("poison carrots");
+			for(int i = 0; i < nb; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.carrotGrowth(false, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+
+			this.grid.display();
+		} else {
+			for(int i = 0; i < nb_field_rabbits; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.rabbitSpawn(true, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+
+			for(int i = 0; i < nb_field_reg_carrots; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.carrotGrowth(true, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+
+			for(int i = 0; i < nb_field_pois_carrots; i++) {
+				placed = false;
+				do {
+					rli = this.random.nextInt(this.grid.getLi());
+					rco = this.random.nextInt(this.grid.getCo());
+					if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+						this.carrotGrowth(false, rli, rco);
+						placed = true;
+					}
+				} while(!placed);
+			}
+
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			this.window = new Window(screenSize.width, screenSize.height);
+			this.map = new Map();
+			this.window.add(this.map);
 		}
-
-		nb = getInstance().inputNumber("carottes");
-		for (int i = 0; i < nb; i++) {
-			placed = false;
-			do {
-				rli = this.random.nextInt(this.grid.getLi());
-				rco = this.random.nextInt(this.grid.getCo());
-				if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.carrotGrowth(true, rli, rco);
-					placed = true;
-				}
-			} while(!placed);
-		}
-
-		nb = getInstance().inputNumber("carottes empoisonnees");
-		for (int i = 0; i < nb; i++) {
-			placed = false;
-			do {
-				rli = this.random.nextInt(this.grid.getLi());
-				rco = this.random.nextInt(this.grid.getCo());
-				if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
-					this.carrotGrowth(false, rli, rco);
-					placed = true;
-				}
-			} while(!placed);
-		}
-		
-		this.gameover = false;
-
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.window = new Window(screenSize.width, screenSize.height);
-		this.map = new Map();
-		this.window.add(this.map);
-
-		this.grid.display();
 	}
 
 	/**
@@ -353,8 +461,11 @@ public class Controller {
 
 			}
 
-			this.window.repaint();
-			Thread.sleep(500);
+			if(this.ihm) {
+				this.window.repaint();
+				Thread.sleep(500);
+			}
+			
 			for(Rabbit r : rabbs) {
 				r.setMoving(false);	
 			}
@@ -432,8 +543,11 @@ public class Controller {
 			this.underground.removeAll(this.buffer);
 			this.buffer.clear();
 
-			this.map.repaint();
-			this.grid.display();
+			if(this.ihm) {
+				this.map.repaint();
+			} else {
+				this.grid.display();	
+			}
 		} else {
 			this.gameover = true;
 			System.out.println("GAME OVER");

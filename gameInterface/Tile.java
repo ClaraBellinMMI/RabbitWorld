@@ -1,7 +1,6 @@
 package gameInterface;
 
 import java.awt.Graphics;
-
 import gameActors.Rabbit.Direction;
 
 public class Tile {
@@ -25,7 +24,7 @@ public class Tile {
 	 * Hauteur du Tile
 	 */
 	private int height;
-	
+
 	public Tile(Tileset t, int x, int y) {
 		super();
 		this.ts = t;

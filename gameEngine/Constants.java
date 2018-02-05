@@ -7,8 +7,11 @@ public class Constants {
 	private static int carrotLife = 10;
 	private static int respawnRegularCarrot = 5;
 	private static int respawnPoisonCarrot = 10;
-	private static String pathTileset1 = "./RW_Tileset.png";
-	private static String pathTileset2 = "./RW_Charset.png";
+	private static String pathTileset1 = "./src/RW_Tileset.png";
+	private static String pathTileset2 = "./src/RW_Charset.png";
+	private static String pathRabbitGif = "./src/lapin_bas_param.gif";
+	private static String pathHoleGif = "./src/lapin_terrier.gif";
+	private static String pathErrorGif = "./src/lapin_erreur.png";
 
 	public static int getMapWidth() {
 		return mapWidth;
@@ -40,6 +43,18 @@ public class Constants {
 
 	public static String getPathTileset2() {
 		return pathTileset2;
+	}
+
+	public static String getPathRabbitGif() {
+		return pathRabbitGif;
+	}
+
+	public static String getPathHoleGif() {
+		return pathHoleGif;
+	}
+
+	public static String getPathErrorGif() {
+		return pathErrorGif;
 	}
 
 	private Constants() {
