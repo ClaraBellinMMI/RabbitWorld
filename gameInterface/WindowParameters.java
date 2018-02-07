@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -80,6 +81,12 @@ public class WindowParameters extends JFrame {
 			FontMetrics fm = g.getFontMetrics();
 			int hauteur = fm.getHeight();
 			g2.drawString("Enter rabbits' number & carrots' number then CLICK START ! ", 20, 20+hauteur);
+			g2.setColor(Color.red);
+			f = new Font("Courier", Font.BOLD, 15);
+			g2.setFont(f);
+			g2.drawString("The map cannot contain more than " + 
+			Constants.getMapWidth() * Constants.getMapHeight() + 
+			" actors", 150, 40+hauteur);
 		}
 	}
 
@@ -197,14 +204,21 @@ public class WindowParameters extends JFrame {
 				Integer reg_carrot_param = Controller.getInstance().unsigned(reg_carrot_param_str);
 				Integer pois_carrot_param = Controller.getInstance().unsigned(pois_carrot_param_str);
 
+				Integer sumActors = rabbit_param + reg_carrot_param + pois_carrot_param;
+				
 				Controller.getInstance().setIhm(true);
-				if(rabbit_param != -1 && reg_carrot_param != -1 && pois_carrot_param != -1) {
+				if(rabbit_param != -1 && 
+				reg_carrot_param != -1 && 
+				pois_carrot_param != -1 && 
+				sumActors <= Constants.getMapWidth() * Constants.getMapHeight()) {
 					try {
 						Controller.getInstance().setNb_field_rabbits(rabbit_param);
 						Controller.getInstance().setNb_field_reg_carrots(reg_carrot_param);
 						Controller.getInstance().setNb_field_pois_carrots(pois_carrot_param);
 						Controller.getInstance().init(true);
 						WindowParameters.this.gameStarted = true;
+						JFrame win = Controller.getInstance().getWindow();
+						win.setExtendedState(win.getExtendedState() | Frame.MAXIMIZED_BOTH);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}			
@@ -213,7 +227,5 @@ public class WindowParameters extends JFrame {
 				}
 			}	
 		}
-
 	}
 }
-

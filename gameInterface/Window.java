@@ -8,7 +8,6 @@ public class Window extends JFrame{
 	public Window(int w, int h){
 		this.setTitle("RabbitWorld v0.5");
 		this.setSize(w, h);
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setVisible(true);
 	}
 }

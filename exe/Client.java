@@ -29,7 +29,6 @@ public class Client {
 			Thread.sleep(1000);
 		}
 
-		Controller.getInstance().init(true);
 		// Temps de configuration de la fenetre IHM, TODO a adapter graphiquement
 		System.out.println("Press <Enter> to start.");
 		bufferReader.readLine();
@@ -51,8 +50,8 @@ public class Client {
 			if(choice.equals("1")) { 							// mode console
 				startGameConsole();
 
-				System.out.println("<o> to play again, <q> to exit.");
 				do {
+					System.out.println("<o> to play again, <q> to exit.");
 					choice = bufferReader.readLine();
 					if((choice.toUpperCase()).equals("O")) {
 						startGameConsole();

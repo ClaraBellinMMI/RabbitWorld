@@ -267,9 +267,16 @@ public class Controller {
 
 		int rli;
 		int rco;
+		int nb;
 		boolean placed;
+		int spaceLeft = Constants.getMapWidth() * Constants.getMapHeight();
 		if(!ihm) {
-			int nb = getInstance().inputNumber("rabbits");
+			do {
+				if((nb = getInstance().inputNumber("rabbits")) > spaceLeft) {
+					System.out.println("Not enough space!");
+				}
+			} while(nb > spaceLeft);
+			spaceLeft -= nb;
 			for(int i = 0; i < nb; i++) {
 				placed = false;
 				do {
@@ -282,7 +289,12 @@ public class Controller {
 				} while(!placed);
 			}
 
-			nb = getInstance().inputNumber("carrots");
+			do {
+				if((nb = getInstance().inputNumber("carrots")) > spaceLeft) {
+					System.out.println("Not enough space!");
+				}
+			} while(nb > spaceLeft);
+			spaceLeft -= nb;
 			for(int i = 0; i < nb; i++) {
 				placed = false;
 				do {
@@ -295,7 +307,12 @@ public class Controller {
 				} while(!placed);
 			}
 
-			nb = getInstance().inputNumber("poison carrots");
+			do {
+				if((nb = getInstance().inputNumber("poison carrots")) > spaceLeft) {
+					System.out.println("Not enough space!");
+				}
+			} while(nb > spaceLeft);
+			spaceLeft -= nb;
 			for(int i = 0; i < nb; i++) {
 				placed = false;
 				do {
@@ -465,7 +482,7 @@ public class Controller {
 				this.window.repaint();
 				Thread.sleep(500);
 			}
-			
+
 			for(Rabbit r : rabbs) {
 				r.setMoving(false);	
 			}
