@@ -1,7 +1,9 @@
 package gameInterface;
 
 import java.awt.Graphics;
+
 import gameActors.Rabbit.Direction;
+import gameEngine.Controller;
 
 public class Tile {
 	/**
@@ -40,7 +42,7 @@ public class Tile {
 		g.drawImage(this.ts.getImage(), 
 				x * this.ts.getTileW(), y * this.ts.getTileH(), (x + 1) * this.ts.getTileW(), (y + 1) * this.ts.getTileH(), 
 				tx , ty, tx + this.ts.getTileW(), ty + this.ts.getTileH(), 
-				null);
+				Controller.getInstance().getMap());
 	}
 
 	public void drawTile(Graphics g, int x, int y, Direction direction) {
@@ -68,6 +70,6 @@ public class Tile {
 				(x + 1) * this.ts.getTileW() + offsetX, 
 				(y + 1) * this.ts.getTileH() + offsetY, 
 				tx , ty, tx + this.ts.getTileW(), ty + this.ts.getTileH(), 
-				null);
+				Controller.getInstance().getMap());
 	}
 }
