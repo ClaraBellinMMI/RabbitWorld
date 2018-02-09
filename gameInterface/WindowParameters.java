@@ -212,6 +212,7 @@ public class WindowParameters extends JFrame {
 						win.setBounds(0, 0, 
 								Constants.getMapWidth() * 32 + 20, 
 								Constants.getMapHeight() * 32 + 45);
+						win.setResizable(false);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}			

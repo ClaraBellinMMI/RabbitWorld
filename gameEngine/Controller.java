@@ -593,10 +593,8 @@ public class Controller {
 				this.grid.display();	
 			}
 		} else {
-			this.gameInited = false;
-			//this.gameStarted = false;
 			this.gameover = true;
-			System.out.println("GAME OVER");
+			this.map.repaint();
 		}
 	} 
 }

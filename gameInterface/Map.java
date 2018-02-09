@@ -31,6 +31,7 @@ public class Map extends JPanel {
 				if(keys == KeyEvent.VK_ENTER || keys == KeyEvent.VK_F5) {
 					ctrl.setGameStarted(true);
 					repaint();
+					removeKeyListener(this);
 				}
 			}
 		});
@@ -88,6 +89,8 @@ public class Map extends JPanel {
 			Font f2 = new Font("Courier", Font.BOLD, 20);
 			g2d.setFont(f2);
 			g2d.drawString("To play again, exit the window and enter new inputs !", 6, 330);
+			ctrl.setGameInited(false);
+			ctrl.setGameInited(false);
 		}
 	}
 }
