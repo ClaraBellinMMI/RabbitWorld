@@ -594,7 +594,7 @@ public class Controller {
 			}
 		} else {
 			this.gameInited = false;
-			this.gameStarted = false;
+			//this.gameStarted = false;
 			this.gameover = true;
 			System.out.println("GAME OVER");
 		}
