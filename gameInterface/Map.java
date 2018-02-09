@@ -1,6 +1,12 @@
 package gameInterface;
 
+import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
 
@@ -16,32 +22,51 @@ public class Map extends JPanel {
 
 	public Map() {
 		super();
+		this.setFocusable(true);
+		this.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int keys = e.getKeyCode();
+				if(keys == KeyEvent.VK_ENTER || keys == KeyEvent.VK_F5) {
+					ctrl.setGameStarted(true);
+					repaint();
+				}
+			}
+		});
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D)g;
 
 		for(int i = 0; i < this.ctrl.getGrid().getLi(); i++) {
 			for(int j = 0; j < this.ctrl.getGrid().getCo(); j++) {
-				TilesetRW.getInstance().getGrass().drawTile(g, j, i);
+				TilesetRW.getInstance().getGrass().drawTile(g2d, j, i);
 			}
 		}
 
 		for(RegularCarrot rc : this.ctrl.getCarrots()) {
-			rc.draw(g, rc.getPosCo(), rc.getPosLi());
+			rc.draw(g2d, rc.getPosCo(), rc.getPosLi());
 		}
 
 		for(PoisonCarrot pc : this.ctrl.getPoisons()) {
-			pc.draw(g, pc.getPosCo(), pc.getPosLi());
+			pc.draw(g2d, pc.getPosCo(), pc.getPosLi());
 		}
 
 		for(AdultRabbit ar : this.ctrl.getAdultRabbits()) {
-			ar.draw(g, ar.getPosCo(), ar.getPosLi());
+			ar.draw(g2d, ar.getPosCo(), ar.getPosLi());
 		}
 
 		for(BabyRabbit br : this.ctrl.getBabyRabbits()) {
-			br.draw(g, br.getPosCo(), br.getPosLi());
+			br.draw(g2d, br.getPosCo(), br.getPosLi());
+		}
+
+		if(!ctrl.isGameStarted()) {
+			GradientPaint pausedGrad = new GradientPaint(0, 0, new Color(0, 0, 224, 50), 
+					this.getWidth(), this.getHeight(), new Color(0, 0, 224, 50));
+			g2d.setPaint(pausedGrad);
+			g2d.fill(new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight()));
 		}
 	}
 }

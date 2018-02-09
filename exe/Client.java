@@ -1,5 +1,7 @@
 package exe;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +11,7 @@ import gameInterface.WindowParameters;
 
 public class Client {
 	private static BufferedReader bufferReader = new BufferedReader(new InputStreamReader(System.in));
+	private static boolean closed = false;
 
 	private static void startGameConsole() throws InterruptedException, IOException {
 		Controller.getInstance().init(false);
@@ -23,15 +26,10 @@ public class Client {
 		}
 	}
 
-	private static void startGameGraphical(WindowParameters winParams) throws InterruptedException, IOException {
-		//attente de la saisie des parametres dans la fenetre
-		while(!winParams.gameHasStarted()) {
+	private static void startGameGraphical() throws InterruptedException, IOException {
+		while(!Controller.getInstance().isGameStarted()) {
 			Thread.sleep(1000);
 		}
-
-		// Temps de configuration de la fenetre IHM, TODO a adapter graphiquement
-		System.out.println("Press <Enter> to start.");
-		bufferReader.readLine();
 
 		while(!Controller.getInstance().gameOver()) {
 			Controller.getInstance().nextTurn();
@@ -65,7 +63,21 @@ public class Client {
 				System.out.println("Bye!");
 				System.exit(0);
 			} else if(choice.equals("2")) { 						// mode IHM
-				startGameGraphical(new WindowParameters());
+				WindowParameters winParam = new WindowParameters();
+				winParam.addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosed(WindowEvent e) {
+						closed = true;
+					}
+				});
+				
+				do {
+					// Attente de la saisie des parametres initiaux
+					while(!Controller.getInstance().gameIsInit()) {
+						Thread.sleep(1000);
+					}
+					startGameGraphical();
+				} while(!closed);
 			} else {
 				System.out.println("Unknown input.");
 			}

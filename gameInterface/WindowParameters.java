@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -29,11 +28,10 @@ import gameEngine.Controller;
 
 public class WindowParameters extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private boolean gameStarted;
+
 
 	public WindowParameters() {
-		this.gameStarted = false;
-
+		Controller.getInstance().setGameInited(false);
 		setBounds(100,100, 750, 500);
 		setTitle("RabbitWorld GAME");
 		Panel panneau= new Panel();
@@ -61,14 +59,6 @@ public class WindowParameters extends JFrame {
 		this.setVisible(true);
 	}
 
-	public boolean gameHasStarted() {
-		return gameStarted;
-	}
-
-	public void setGameStarted(boolean gameStarted) {
-		this.gameStarted = gameStarted;
-	}
-
 	private class Panel extends JPanel {
 		private static final long serialVersionUID = 1L;
 		public void paintComponent(Graphics g) {
@@ -85,8 +75,8 @@ public class WindowParameters extends JFrame {
 			f = new Font("Courier", Font.BOLD, 15);
 			g2.setFont(f);
 			g2.drawString("The map cannot contain more than " + 
-			Constants.getMapWidth() * Constants.getMapHeight() + 
-			" actors", 150, 40+hauteur);
+					Constants.getMapWidth() * Constants.getMapHeight() + 
+					" actors", 150, 40+hauteur);
 		}
 	}
 
@@ -205,20 +195,23 @@ public class WindowParameters extends JFrame {
 				Integer pois_carrot_param = Controller.getInstance().unsigned(pois_carrot_param_str);
 
 				Integer sumActors = rabbit_param + reg_carrot_param + pois_carrot_param;
-				
+
 				Controller.getInstance().setIhm(true);
 				if(rabbit_param != -1 && 
-				reg_carrot_param != -1 && 
-				pois_carrot_param != -1 && 
-				sumActors <= Constants.getMapWidth() * Constants.getMapHeight()) {
+						reg_carrot_param != -1 && 
+						pois_carrot_param != -1 && 
+						sumActors <= Constants.getMapWidth() * Constants.getMapHeight()) {
 					try {
 						Controller.getInstance().setNb_field_rabbits(rabbit_param);
 						Controller.getInstance().setNb_field_reg_carrots(reg_carrot_param);
 						Controller.getInstance().setNb_field_pois_carrots(pois_carrot_param);
 						Controller.getInstance().init(true);
-						WindowParameters.this.gameStarted = true;
+						Controller.getInstance().setGameInited(true);
+						Controller.getInstance().setGameStarted(false);
 						JFrame win = Controller.getInstance().getWindow();
-						win.setExtendedState(win.getExtendedState() | Frame.MAXIMIZED_BOTH);
+						win.setBounds(0, 0, 
+								Constants.getMapWidth() * 32 + 20, 
+								Constants.getMapHeight() * 32 + 45);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}			

@@ -97,6 +97,16 @@ public class Controller {
 	private boolean ihm = false;
 
 	/**
+	 * Booleen indiquant si la partie a ete initialisee.
+	 */
+	private boolean gameInited;
+	
+	/**
+	 * Booleen indiquant si la partie a commence.
+	 */
+	private boolean gameStarted;
+	
+	/**
 	 * Booleen indiquant si la partie est terminee.
 	 */
 	private boolean gameover;
@@ -108,6 +118,7 @@ public class Controller {
 	public static Controller getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new Controller();
+			INSTANCE.gameInited = false;
 		}
 		return INSTANCE;
 	}
@@ -158,6 +169,22 @@ public class Controller {
 
 	public void setNb_field_pois_carrots(int nb_field_pois_carrots) {
 		this.nb_field_pois_carrots = nb_field_pois_carrots;
+	}
+
+	public boolean gameIsInit() {
+		return gameInited;
+	}
+
+	public void setGameInited(boolean gameStarted) {
+		this.gameInited = gameStarted;
+	}
+
+	public boolean isGameStarted() {
+		return gameStarted;
+	}
+
+	public void setGameStarted(boolean gameStarted) {
+		this.gameStarted = gameStarted;
 	}
 
 	public boolean gameOver() {
@@ -566,6 +593,8 @@ public class Controller {
 				this.grid.display();	
 			}
 		} else {
+			this.gameInited = false;
+			this.gameStarted = false;
 			this.gameover = true;
 			System.out.println("GAME OVER");
 		}
