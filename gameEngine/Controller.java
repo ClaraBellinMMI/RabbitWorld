@@ -24,42 +24,42 @@ public class Controller {
 	/**
 	 * Les AdultRabbit presents en jeu.
 	 */
-	private List<AdultRabbit> adultRabbits = new ArrayList<>();
+	private List<AdultRabbit> adultRabbits;
 
 	/**
 	 * Les BabyRabbit presents en jeu.
 	 */
-	private List<BabyRabbit> babyRabbits = new ArrayList<>();
+	private List<BabyRabbit> babyRabbits;
 
 	/**
 	 * Les Rabbit mort pendant le tour courant de jeu.
 	 */
-	private List<Rabbit> deadRabbits = new ArrayList<>();
+	private List<Rabbit> deadRabbits;
 
 	/**
 	 * Les RegularCarrot presentes en jeu.
 	 */
-	private List<RegularCarrot> carrots = new ArrayList<>();
+	private List<RegularCarrot> carrots;
 
 	/**
 	 * Les PoisonCarrot presentes en jeu.
 	 */
-	private List<PoisonCarrot> poisons = new ArrayList<>();
+	private List<PoisonCarrot> poisons;
 
 	/**
 	 * Les Carrot disparues pendant ce tour de jeu (mangees ou devenues empoisonnees).
 	 */
-	private List<Carrot> deadCarrot = new ArrayList<>();
+	private List<Carrot> deadCarrot;
 
 	/**
 	 * Les Carrot encore sous terre (qui vont etre bientot presentes en jeu).
 	 */
-	private List<Carrot> underground = new ArrayList<>();
+	private List<Carrot> underground;
 
 	/**
 	 * List de GameElement servant a mettre a jour d'autre List d'acteurs.
 	 */
-	private List<GameElement> buffer = new ArrayList<>();
+	private List<GameElement> buffer;
 
 	/**
 	 * La Grid sur laquelle le Controller agit.
@@ -100,12 +100,12 @@ public class Controller {
 	 * Booleen indiquant si la partie a ete initialisee.
 	 */
 	private boolean gameInited;
-	
+
 	/**
 	 * Booleen indiquant si la partie a commence.
 	 */
 	private boolean gameStarted;
-	
+
 	/**
 	 * Booleen indiquant si la partie est terminee.
 	 */
@@ -283,14 +283,14 @@ public class Controller {
 		this.ihm = ihm;
 		this.gameover = false;
 		this.grid = new Grid(Constants.getMapWidth(), Constants.getMapHeight());
-		this.adultRabbits.clear();
-		this.babyRabbits.clear();
-		this.deadRabbits.clear();
-		this.carrots.clear();
-		this.poisons.clear();
-		this.deadCarrot.clear();
-		this.underground.clear();
-		this.buffer.clear();
+		this.adultRabbits = new ArrayList<>();
+		this.babyRabbits = new ArrayList<>();
+		this.deadRabbits = new ArrayList<>();
+		this.carrots = new ArrayList<>();
+		this.poisons = new ArrayList<>();
+		this.deadCarrot = new ArrayList<>();
+		this.underground = new ArrayList<>();
+		this.buffer = new ArrayList<>();
 
 		int rli;
 		int rco;
@@ -299,7 +299,7 @@ public class Controller {
 		int spaceLeft = Constants.getMapWidth() * Constants.getMapHeight();
 		if(!ihm) {
 			do {
-				if((nb = getInstance().inputNumber("rabbits")) > spaceLeft) {
+				if((nb = this.inputNumber("rabbits")) > spaceLeft) {
 					System.out.println("Not enough space!");
 				}
 			} while(nb > spaceLeft);
@@ -309,7 +309,7 @@ public class Controller {
 				do {
 					rli = this.random.nextInt(this.grid.getLi());
 					rco = this.random.nextInt(this.grid.getCo());
-					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+					if(this.grid.getCells()[rli][rco].isEmpty()) {
 						this.rabbitSpawn(true, rli, rco);
 						placed = true;
 					}
@@ -317,7 +317,7 @@ public class Controller {
 			}
 
 			do {
-				if((nb = getInstance().inputNumber("carrots")) > spaceLeft) {
+				if((nb = this.inputNumber("carrots")) > spaceLeft) {
 					System.out.println("Not enough space!");
 				}
 			} while(nb > spaceLeft);
@@ -327,7 +327,7 @@ public class Controller {
 				do {
 					rli = this.random.nextInt(this.grid.getLi());
 					rco = this.random.nextInt(this.grid.getCo());
-					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+					if(this.grid.getCells()[rli][rco].isEmpty()) {
 						this.carrotGrowth(true, rli, rco);
 						placed = true;
 					}
@@ -335,7 +335,7 @@ public class Controller {
 			}
 
 			do {
-				if((nb = getInstance().inputNumber("poison carrots")) > spaceLeft) {
+				if((nb = this.inputNumber("poison carrots")) > spaceLeft) {
 					System.out.println("Not enough space!");
 				}
 			} while(nb > spaceLeft);
@@ -345,7 +345,7 @@ public class Controller {
 				do {
 					rli = this.random.nextInt(this.grid.getLi());
 					rco = this.random.nextInt(this.grid.getCo());
-					if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+					if (this.grid.getCells()[rli][rco].isEmpty()) {
 						this.carrotGrowth(false, rli, rco);
 						placed = true;
 					}
@@ -359,7 +359,7 @@ public class Controller {
 				do {
 					rli = this.random.nextInt(this.grid.getLi());
 					rco = this.random.nextInt(this.grid.getCo());
-					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+					if(this.grid.getCells()[rli][rco].isEmpty()) {
 						this.rabbitSpawn(true, rli, rco);
 						placed = true;
 					}
@@ -371,7 +371,7 @@ public class Controller {
 				do {
 					rli = this.random.nextInt(this.grid.getLi());
 					rco = this.random.nextInt(this.grid.getCo());
-					if(this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+					if(this.grid.getCells()[rli][rco].isEmpty()) {
 						this.carrotGrowth(true, rli, rco);
 						placed = true;
 					}
@@ -383,7 +383,7 @@ public class Controller {
 				do {
 					rli = this.random.nextInt(this.grid.getLi());
 					rco = this.random.nextInt(this.grid.getCo());
-					if (this.grid.getCells()[rli][rco].getContent() instanceof Dirt) {
+					if (this.grid.getCells()[rli][rco].isEmpty()) {
 						this.carrotGrowth(false, rli, rco);
 						placed = true;
 					}
@@ -578,8 +578,12 @@ public class Controller {
 			for(Carrot c : this.underground) {
 				int respawnTime = c.getRespawnTime();
 				if(respawnTime == 0) {
-					this.carrotGrowth(true, c.getPosLi(), c.getPosCo());
-					this.buffer.add(c);
+					if(this.grid.getCells()[c.getPosLi()][c.getPosCo()].isEmpty()) {
+						this.carrotGrowth(true, c.getPosLi(), c.getPosCo());
+						this.buffer.add(c);
+					} else {
+						c.setRespawnTime(respawnTime + 1);
+					}
 				} else {
 					c.setRespawnTime(respawnTime - 1);
 				}
@@ -594,7 +598,9 @@ public class Controller {
 			}
 		} else {
 			this.gameover = true;
-			this.map.repaint();
+			if(this.ihm) {
+				this.map.repaint();
+			}
 		}
 	} 
 }

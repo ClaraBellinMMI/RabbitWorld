@@ -149,7 +149,7 @@ public abstract class Rabbit extends GameElement {
 			}
 
 			Cell test = Controller.getInstance().getGrid().getCells()[li][co];
-			if(!test.isOccupied()) {
+			if(test.isEmpty() || test.getContent() instanceof Carrot) {
 				found = true;
 				c = test;
 			}

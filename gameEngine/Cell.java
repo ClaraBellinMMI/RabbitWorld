@@ -1,13 +1,12 @@
 package gameEngine;
 
-import gameActors.Rabbit;
+import gameActors.Dirt;
 
 /**
  * Case de terrain de jeu
  */
 public class Cell {
 	private boolean empty;
-	private boolean occupied;
 	private GameElement content;
 
 	/**
@@ -16,15 +15,10 @@ public class Cell {
 	public Cell() {
 		this.content = null;
 		this.empty = true;
-		this.occupied = false;
 	}
 
 	public boolean isEmpty() {
 		return this.empty;
-	}
-
-	public boolean isOccupied() {
-		return this.occupied;
 	}
 
 	/**
@@ -38,13 +32,10 @@ public class Cell {
 
 	public void setContent(GameElement content) {
 		this.content = content;
-		this.occupied = false;
-		this.empty = true;
-	}
-	
-	public void setContent(Rabbit content) {
-		this.content = content;
-		this.occupied = true;
-		this.empty = false;
+		if(content instanceof Dirt) {
+			this.empty = true;
+		} else {
+			this.empty = false;
+		}
 	}
 }

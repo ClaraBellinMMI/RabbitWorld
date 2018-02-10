@@ -30,7 +30,7 @@ public class Client {
 		while(!Controller.getInstance().isGameStarted()) {
 			Thread.sleep(1000);
 		}
-		System.out.println("GO!");
+
 		while(!Controller.getInstance().gameOver()) {
 			Controller.getInstance().nextTurn();
 			Thread.sleep(1000);
