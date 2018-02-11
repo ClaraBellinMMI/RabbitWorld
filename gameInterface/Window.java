@@ -20,7 +20,6 @@ public class Window extends JFrame{
 				Controller.getInstance().setGameInited(false);
 				Controller.getInstance().setGameStarted(false);
 				Controller.getInstance().setGameover(true);
-				System.out.println("lol");
 			}
 		});
 		this.setVisible(true);
