@@ -38,7 +38,7 @@ public class ModeManager extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
-			g2.setColor(Color.yellow);
+			g2.setColor(Color.BLACK);
 			Font f = new Font("Courier", Font.BOLD, 20);
 			g2.setFont(f);
 			g2.drawString("Choose your mode", 150, 30);

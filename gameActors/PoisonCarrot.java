@@ -14,7 +14,7 @@ public class PoisonCarrot extends Carrot {
 
 	@Override
 	public void setEaten() {
-		this.setRespawnTime(Constants.getRespawnPoisonCarrot());
+		this.setRespawnTime(Constants.getRespawnRegularCarrot());
 		Controller.getInstance().setEaten(this);
 	}
 

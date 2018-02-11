@@ -32,10 +32,10 @@ public class WindowParameters extends JFrame {
 	public WindowParameters() {
 		Controller.getInstance().setGameInited(false);
 		setBounds(100,100, 750, 500);
-		setTitle("RabbitWorld GAME");
+		setTitle("RabbitWorld");
 		Panel panneau= new Panel();
 		panneau.setBackground(Color.ORANGE);
-		panneau.setPreferredSize(new Dimension(750, 70));
+		panneau.setPreferredSize(new Dimension(750, 80));
 		add(panneau, BorderLayout.NORTH);
 
 		Panel_Parameters pann_param = new Panel_Parameters();
@@ -63,7 +63,7 @@ public class WindowParameters extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
-			g2.setColor(Color.yellow);
+			g2.setColor(Color.BLACK);
 			Font f = new Font("Courier", Font.BOLD, 20);
 			g2.setFont(f);
 			g2.drawString("WELCOME TO RABBITWORLD GAME !!!!", 150, 20);

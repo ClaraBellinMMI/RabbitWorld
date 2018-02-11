@@ -34,7 +34,7 @@ public class BabyRabbit extends Rabbit {
 	@Override
 	public void eat(RegularCarrot c) {
 		c.setEaten();
-		this.setLife(this.life + 2);
+		this.setLife(this.life + 8);
 	}
 
 	@Override

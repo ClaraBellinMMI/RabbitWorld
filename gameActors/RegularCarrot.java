@@ -48,6 +48,10 @@ public class RegularCarrot extends Carrot {
 
 	@Override
 	public void draw(Graphics g, int x, int y) throws IOException {
-		TilesetRW.getInstance().getCarrot().drawTile(g, x, y);
+		if(this.life == 1) {
+			TilesetRW.getInstance().getSemiRotten().drawTile(g, x, y);
+		} else {
+			TilesetRW.getInstance().getCarrot().drawTile(g, x, y);
+		}
 	}
 }

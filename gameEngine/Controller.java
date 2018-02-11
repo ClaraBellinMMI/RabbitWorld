@@ -445,6 +445,7 @@ public class Controller {
 		int y = r.getPosCo();
 		this.babyRabbits.remove(r);
 		AdultRabbit newAdult = new AdultRabbit(x, y, r.isMale());
+		newAdult.setLife(r.getLife());
 		this.adultRabbits.add(newAdult);
 	}
 
@@ -457,7 +458,7 @@ public class Controller {
 	public void reproduce(Rabbit ar, Rabbit r) {
 		if(!r.hasReproduced()) {
 			r.setReproduced(true);
-			int nbBabyLeft = 4;
+			int nbBabyLeft = 2;
 			int x = ar.getPosLi();
 			int y = ar.getPosCo();
 			int i, j;

@@ -3,10 +3,9 @@ package gameEngine;
 public class Constants {
 	private static int mapWidth = 20;
 	private static int mapHeight = 20;
-	private static int adultAge = 8;
+	private static int adultAge = 6;
 	private static int carrotLife = 10;
 	private static int respawnRegularCarrot = 5;
-	private static int respawnPoisonCarrot = 10;
 	private static String pathTileset1 = "/ressources/RW_Tileset.png";
 	private static String pathTileset2 = "/ressources/RW_Charset.png";
 	private static String pathRabbitGif = "/ressources/lapin_bas_param.gif";
@@ -31,10 +30,6 @@ public class Constants {
 
 	public static int getRespawnRegularCarrot() {
 		return respawnRegularCarrot;
-	}
-
-	public static int getRespawnPoisonCarrot() {
-		return respawnPoisonCarrot;
 	}
 
 	public static String getPathTileset1() {
