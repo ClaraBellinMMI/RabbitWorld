@@ -190,6 +190,10 @@ public class Controller {
 	public boolean gameOver() {
 		return this.gameover;
 	}
+	
+	public void setGameover(boolean gameover) {
+		this.gameover = gameover;
+	}
 
 	/**
 	 * Fait apparaitre un Rabbit dans la Grid a la Cell specifiee par les parametres 
