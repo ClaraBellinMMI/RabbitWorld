@@ -11,7 +11,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -87,7 +86,7 @@ public class WindowParameters extends JFrame {
 			Graphics2D g2 = (Graphics2D)g;
 			String fichier = Constants.getPathRabbitGif();
 			try {
-				BufferedImage im = ImageIO.read(new File(fichier));
+				BufferedImage im = ImageIO.read(getClass().getResource(fichier));
 				g2.drawImage(im, 150, 10, 400, 140, null);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -102,7 +101,7 @@ public class WindowParameters extends JFrame {
 			Graphics2D g2 = (Graphics2D)g;
 			String fichier = Constants.getPathHoleGif();
 			try {
-				BufferedImage im = ImageIO.read(new File(fichier));
+				BufferedImage im = ImageIO.read(getClass().getResource(fichier));
 				g2.drawImage(im, 10, 10, 220, 220, null);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -133,7 +132,7 @@ public class WindowParameters extends JFrame {
 				g2.drawString("ERROR, PLEASE CORRECT YOUR INPUT FIELDS", 10, 30);
 				String fichier = Constants.getPathErrorGif();
 				try {
-					BufferedImage im = ImageIO.read(new File(fichier));
+					BufferedImage im = ImageIO.read(getClass().getResource(fichier));
 					g2.drawImage(im, 120, 40, 180, 200, null);
 				} catch (IOException e) {
 					e.printStackTrace();

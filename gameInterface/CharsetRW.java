@@ -1,13 +1,15 @@
 package gameInterface;
 
 import java.awt.Image;
-import java.awt.Toolkit;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import gameEngine.Constants;
 
 public class CharsetRW implements Tileset {
 	private static CharsetRW INSTANCE;
-	private static Image tilesetImg = Toolkit.getDefaultToolkit().getImage(Constants.getPathTileset2());
+	private static Image tilesetImg = null;
 	private static int li = 4; // nombre de lignes de tiles
 	private static int co = 8; // nombre de colonnes de tiles
 	private static int tileW = 32; // tile width
@@ -16,9 +18,10 @@ public class CharsetRW implements Tileset {
 
 	private CharsetRW() {}
 
-	public static CharsetRW getInstance() {
+	public static CharsetRW getInstance() throws IOException {
 		if(INSTANCE == null) {
 			INSTANCE = new CharsetRW();
+			tilesetImg = ImageIO.read(INSTANCE.getClass().getResource(Constants.getPathTileset2()));
 
 			tileset = new Tile[li][co];
 			for(int i = 0; i < li; i++) {

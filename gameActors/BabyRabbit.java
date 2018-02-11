@@ -1,6 +1,7 @@
 package gameActors;
 
 import java.awt.Graphics;
+import java.io.IOException;
 
 import gameEngine.Cell;
 import gameEngine.Constants;
@@ -53,7 +54,7 @@ public class BabyRabbit extends Rabbit {
 	}
 
 	@Override
-	public void draw(Graphics g, int x, int y) {
+	public void draw(Graphics g, int x, int y) throws IOException {
 		if(!this.isMoving()) {
 			if(this.isMale()) {
 				if(this.pointingTo == Direction.DOWN) {

@@ -7,11 +7,11 @@ public class Constants {
 	private static int carrotLife = 10;
 	private static int respawnRegularCarrot = 5;
 	private static int respawnPoisonCarrot = 10;
-	private static String pathTileset1 = "./src/RW_Tileset.png";
-	private static String pathTileset2 = "./src/RW_Charset.png";
-	private static String pathRabbitGif = "./src/lapin_bas_param.gif";
-	private static String pathHoleGif = "./src/lapin_terrier.gif";
-	private static String pathErrorGif = "./src/lapin_erreur.png";
+	private static String pathTileset1 = "/ressources/RW_Tileset.png";
+	private static String pathTileset2 = "/ressources/RW_Charset.png";
+	private static String pathRabbitGif = "/ressources/lapin_bas_param.gif";
+	private static String pathHoleGif = "/ressources/lapin_terrier.gif";
+	private static String pathErrorGif = "/ressources/lapin_erreur.png";
 
 	public static int getMapWidth() {
 		return mapWidth;

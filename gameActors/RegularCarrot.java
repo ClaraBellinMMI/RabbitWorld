@@ -1,6 +1,7 @@
 package gameActors;
 
 import java.awt.Graphics;
+import java.io.IOException;
 
 import gameEngine.Constants;
 import gameEngine.Controller;
@@ -46,7 +47,7 @@ public class RegularCarrot extends Carrot {
 	}
 
 	@Override
-	public void draw(Graphics g, int x, int y) {
+	public void draw(Graphics g, int x, int y) throws IOException {
 		TilesetRW.getInstance().getCarrot().drawTile(g, x, y);
 	}
 }
